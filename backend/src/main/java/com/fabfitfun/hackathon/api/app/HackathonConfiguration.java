@@ -21,24 +21,4 @@ class HackathonConfiguration extends Configuration {
   @Valid
   @NotNull
   private AppConfig app;
-
-  @Valid
-  @NotNull
-  private DataSourceFactory customizeReadDatabase;
-
-  @Valid
-  @NotNull
-  private DataSourceFactory customizeWriteDatabase;
-
-  @Valid
-  @NotNull
-  private DataSourceFactory pushReadDatabase;
-  
-  @Valid
-  @NotNull
-  private DataSourceFactory shopReadDatabase;
-
-  @NotNull
-  @JsonProperty("swagger")
-  private SwaggerConfiguration swaggerConfiguration;
 }

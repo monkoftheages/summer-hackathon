@@ -23,7 +23,7 @@
     <sdk.s3.version>1.11.588</sdk.s3.version>
     <keycloak.version>4.8.0.Final</keycloak.version>
     <resteasy.version>4.0.0.Beta3</resteasy.version>
-    <mainClass>${project.groupId}.customize.assignment.app.AssignmentApplication</mainClass>
+    <mainClass>${project.groupId}.hackathon.app.HackathonApplication</mainClass>
     <junit.jupiter.version>5.5.2</junit.jupiter.version>
     <junit.platform.version>1.5.2</junit.platform.version>
     <atmosphere-version>2.6.1</atmosphere-version>

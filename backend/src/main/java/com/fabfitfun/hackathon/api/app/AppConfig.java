@@ -8,14 +8,6 @@ import lombok.Data;
 @Data
 class AppConfig {
   private boolean authBypassed;
-  private double inventoryHoldbackPercentage;
-
-  // Variables for v1 backend communication
-  private String v1BackendKey;
-  private String v1BackendJwt;
-  private String userAddress;
-  private String orderAddress;
-  private int maxThreadCount;
 
 //  @Valid
 //  @NotNull
