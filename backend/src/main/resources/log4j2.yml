@@ -1,0 +1,22 @@
+Configuration:
+  status: warn
+  name: HoneycombLog4JConfig
+  thresholdFilter:
+    level: debug
+  appenders:
+    Console:
+      name: STDOUT
+      JSONLayout:
+        compact: true # set false for pretty print
+        eventEol: true
+        includeStacktrace: true
+        stacktraceAsString: true
+        KeyValuePair:
+           - key: timestamp
+             value: $${date:yyy-MM-dd'T'HH:mm:ss.SSSZ}
+
+  Loggers:
+    Root:
+      level: info
+      AppenderRef:
+        ref: STDOUT
