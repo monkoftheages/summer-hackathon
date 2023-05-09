@@ -1,0 +1,47 @@
+## Dependency stage
+#
+FROM maven:3.6.3-jdk-11 AS dependency-stage
+
+ARG NEXUS_USERNAME
+ARG NEXUS_PASSWORD
+
+# Copy configuration into image
+COPY pom.xml nexus_settings.xml ./
+
+# Configure Nexus
+RUN sed -i -e "s/NEXUS_USERNAME/$NEXUS_USERNAME/g" -e "s/NEXUS_PASSWORD/$NEXUS_PASSWORD/g" nexus_settings.xml
+
+# Download dependencies
+RUN mvn -s nexus_settings.xml --no-transfer-progress dependency:go-offline
+
+## Build stage
+#
+FROM dependency-stage AS build-stage
+
+# Copy app into image
+COPY src src/
+COPY fff_checkstyle.xml ./
+
+# Build application
+ENV MAVEN_OPTS="-XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:+UseStringDeduplication -Xmx10240m -XX:MaxPermSize=128m -noverify"
+
+RUN mvn -s nexus_settings.xml --no-transfer-progress -DskipTests clean package
+
+## Run tests
+RUN mvn -s nexus_settings.xml --no-transfer-progress verify -T 4
+#
+## Run Analysis [Static Code Analysis, PMD, Spotbug]
+RUN mvn -s nexus_settings.xml --no-transfer-progress jxr:jxr pmd:pmd pmd:cpd spotbugs:spotbugs checkstyle:checkstyle jacoco:report
+
+## Export test results stage
+##
+FROM scratch AS export-stage
+COPY --from=build-stage target/spotbugsXml.xml target/checkstyle-result.xml target/pmd.xml /
+COPY --from=build-stage target/surefire-reports /surefire-reports/
+
+## Release stage
+##
+FROM 190405961846.dkr.ecr.us-west-2.amazonaws.com/svc/java11-base-container:v1.0.0-rc.4 as release-stage
+LABEL team=api app=summer-hackathon-api
+COPY --from=build-stage target/summer-hackathon-api-0.0.1-SNAPSHOT.jar $JAR_PATH
+CMD ["spring-start"]
