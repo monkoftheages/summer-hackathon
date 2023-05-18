@@ -1,0 +1,34 @@
+[tool.poetry]
+name = "sentiment-analysis"
+version = "0.1.0"
+description = ""
+authors = ["Karl Duignan <karl.duignan@fabfitfun.com>"]
+
+[tool.poetry.scripts]
+sentiment_analysis = "sentiment_analysis.main:app"
+
+[[tool.poetry.source]]
+name = "fff-pypi"
+url = "https://nexus.fff-svc.com/repository/fff-pypi-all/simple/"
+
+[tool.poetry.dependencies]
+python = ">=3.9,<3.12"
+fastapi = "^0.95.2"
+transformers = "^4.29.2"
+torch = "^2.0.1"
+tensorflow = "^2.12.0"
+flax = "^0.6.10"
+SQLAlchemy = "^2.0.13"
+python-dotenv = "<0.22.0"
+aiomysql = "^0.1.1"
+vaderSentiment = "^3.3.2"
+urllib3 = "<2.0.0"
+google-auth = "<=2.18.0"
+fff-fastapi = "^0.1.92"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
