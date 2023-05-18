@@ -2,3 +2,27 @@
 backend/.idea/libraries/
 
 backend/.idea/
+
+
+.idea
+.venv/
+*.egg-info/
+__pycache__/
+.vscode/
+.pytest_cache/
+local-storage.json
+settings.mk
+.env
+.mypy_cache/
+.DS_Store
+.coverage
+htmlcov/
+/.idea/
+/kustomize/base.yaml
+.honeycomb-manifests
+
+/files/
+.jira.d
+Brewfile.lock.json
+.direnv
+.venv
