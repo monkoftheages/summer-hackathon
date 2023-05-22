@@ -4,3 +4,7 @@ backend/.idea/libraries/
 backend/.idea/
 
 *.class
+
+*.html
+
+backend/target/
