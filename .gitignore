@@ -2,3 +2,5 @@
 backend/.idea/libraries/
 
 backend/.idea/
+
+*.class
