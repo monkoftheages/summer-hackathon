@@ -21,4 +21,8 @@ class HackathonConfiguration extends Configuration {
   @Valid
   @NotNull
   private AppConfig app;
+
+  @Valid
+  @NotNull
+  private DataSourceFactory writeDatabase;
 }

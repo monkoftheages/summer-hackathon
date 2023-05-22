@@ -62,7 +62,7 @@ public class HackathonApplication extends Application<HackathonConfiguration> {
 
     // Swagger setup
     env.jersey().register(new OpenApiResource());
-    new JaxrsOpenApiContextBuilder<>().openApiConfiguration(config.getSwaggerConfiguration())
-        .buildContext(true);
+//    new JaxrsOpenApiContextBuilder<>().openApiConfiguration(config.getSwaggerConfiguration())
+//        .buildContext(true);
   }
 }

@@ -38,7 +38,7 @@ class DependencyManager {
   DependencyManager(HackathonConfiguration config, Environment env) {
     log.info("Initializing read database pool...");
     final JdbiFactory factory = new JdbiFactory();
-    Jdbi hackathonDb = newDatabase(factory, env, config.getShopReadDatabase(), "hackathonDbWrite");
+    Jdbi hackathonDb = newDatabase(factory, env, config.getWriteDatabase(), "hackathonDbWrite");
 
     AppConfig appConfig = config.getApp();
 
@@ -52,7 +52,7 @@ class DependencyManager {
     val hackathonManager = new HackathonManager(hackathonService);
 
     // executor
-    managedExecutor = new ManagedExecutor(appConfig.getMaxThreadCount());
+    managedExecutor = new ManagedExecutor(10);
 
     // Resources
     hackathonResource = new HackathonResource(hackathonManager);
