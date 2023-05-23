@@ -36,7 +36,6 @@ public class HackathonResource {
   @Path("/test")
   public Response saveAssignmentAnswers() {
     val string = "";
-//    val string = hackathonManager.manageData();
     System.out.println("Connection returning: " + string);
     return Response.ok().entity(string).build();
   }
@@ -48,9 +47,9 @@ public class HackathonResource {
       content = @Content(schema = @Schema(implementation = Response.class)))
   @POST
   @Path("/job")
-  public Response runSentimentJob() {
-    hackathonManager.runSentimentJob();
+  public Response runSentimentJob(String query) {
     System.out.println("Running sentiment job");
+    hackathonManager.runSentimentJob(query);
     return Response.ok().build();
   }
 }

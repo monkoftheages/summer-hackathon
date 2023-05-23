@@ -1,4 +1,4 @@
-package com.fabfitfun.hackathon.api;
+package com.fabfitfun.hackathon.api.mapper;
 
 import com.fabfitfun.hackathon.api.mapper.GenericExceptionMapper;
 

@@ -3,9 +3,7 @@ package com.fabfitfun.hackathon.biz.service;
 
 import com.fabfitfun.hackathon.api.app.kafka.MessageProducer;
 import com.fabfitfun.hackathon.api.mapper.KafkaMessageException;
-import com.fabfitfun.hackathon.api.resource.SentimentAnalysisResource;
 import com.fabfitfun.hackathon.avro.customersegmentation.UserProductInterest;
-import com.fabfitfun.hackathon.data.dao.HackathonDao;
 
 import lombok.AllArgsConstructor;
 import lombok.val;
@@ -16,9 +14,7 @@ import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
 
-import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -32,12 +28,12 @@ public class HackathonService {
   private static final String USER_ID = "user_id";
   private static final String PRODUCT_KEYWORD = "product_keyword";
 
-  private Float getSentiment(SentimentAnalysisResource sentiment) {
+  private Float getSentiment(long shopUserId, String keyword) {
     try {
       URI uri = null;
       uri = new URIBuilder().setHost(SENTIMENT_URL)
-              .addParameter(USER_ID, sentiment.getUserId().toString())
-              .addParameter(PRODUCT_KEYWORD, sentiment.getQueryString())
+              .addParameter(USER_ID, shopUserId + "")
+              .addParameter(PRODUCT_KEYWORD, keyword)
               .build();
       ResteasyWebTarget target = client.target(uri);
       Response response = target.request(MediaType.APPLICATION_JSON)
@@ -53,15 +49,15 @@ public class HackathonService {
     }
   }
 
-  public void manageData(SentimentAnalysisResource sentiment) {
-    Float sentimentLevel = getSentiment(sentiment);
+  public void manageData(long shopUserId, String keyword) {
+    Float sentimentLevel = getSentiment(shopUserId, keyword);
   }
 
-  public void sendAnswerToKafka(long shopUserId, String query) {
+  public void sendAnswerToKafka(long shopUserId, String keyword) {
     try {
       val event = UserProductInterest.newBuilder()
           .setUserId(shopUserId)
-          .setKeyword(query)
+          .setKeyword(keyword)
           .build();
       messageProducer.send(topicName, shopUserId + "", event);
     } catch (Exception ex) {

@@ -1,6 +1,6 @@
 package com.fabfitfun.hackathon.api.app;
 
-import com.fabfitfun.hackathon.api.ExceptionResponseHandler;
+import com.fabfitfun.hackathon.api.mapper.ExceptionResponseHandler;
 
 import io.dropwizard.Application;
 import io.dropwizard.bundles.webjars.WebJarBundle;
@@ -11,7 +11,6 @@ import io.dropwizard.configuration.SubstitutingSourceProvider;
 import io.dropwizard.jdbi3.bundles.JdbiExceptionsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
-import io.swagger.v3.jaxrs2.integration.JaxrsOpenApiContextBuilder;
 import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource;
 import lombok.extern.jbosslog.JBossLog;
 
