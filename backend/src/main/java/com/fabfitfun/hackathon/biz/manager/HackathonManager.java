@@ -8,7 +8,8 @@ import lombok.AllArgsConstructor;
 public class HackathonManager {
   private final HackathonService hackathonService;
 
-  public void manageData() {
+  public String manageData() {
     hackathonService.manageData();
+    return "hackathon test string";
   }
 }

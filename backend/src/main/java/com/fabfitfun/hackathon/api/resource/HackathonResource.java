@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.jbosslog.JBossLog;
+import lombok.val;
 
 /**
  * Endpoint(s) to handle assignment/reassignment for both users and groups of users.
@@ -33,7 +34,8 @@ public class HackathonResource {
   @GET
   @Path("/test")
   public Response saveAssignmentAnswers() {
-    hackathonManager.manageData();
-    return Response.ok().build();
+    val string = hackathonManager.manageData();
+    System.out.println("Connection returning: " + string);
+    return Response.ok().entity(string).build();
   }
 }
