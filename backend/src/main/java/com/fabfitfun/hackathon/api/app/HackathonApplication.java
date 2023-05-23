@@ -60,6 +60,10 @@ public class HackathonApplication extends Application<HackathonConfiguration> {
     log.info("Registering resource...");
     env.jersey().register(deps.hackathonResource);
 
+    log.info("Starting kafka...");
+    env.lifecycle().manage(deps.hackathonProducer);
+    env.lifecycle().manage(deps.hackathonConsumer);
+
     // Swagger setup
     env.jersey().register(new OpenApiResource());
 //    new JaxrsOpenApiContextBuilder<>().openApiConfiguration(config.getSwaggerConfiguration())

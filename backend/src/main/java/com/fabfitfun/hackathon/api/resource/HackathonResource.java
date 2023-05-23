@@ -35,7 +35,8 @@ public class HackathonResource {
   @GET
   @Path("/test")
   public Response saveAssignmentAnswers() {
-    val string = hackathonManager.manageData();
+    val string = "";
+//    val string = hackathonManager.manageData();
     System.out.println("Connection returning: " + string);
     return Response.ok().entity(string).build();
   }

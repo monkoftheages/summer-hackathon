@@ -4,6 +4,7 @@ package com.fabfitfun.hackathon.biz.service;
 import com.fabfitfun.hackathon.api.app.kafka.MessageProducer;
 import com.fabfitfun.hackathon.api.mapper.KafkaMessageException;
 import com.fabfitfun.hackathon.api.resource.SentimentAnalysisResource;
+import com.fabfitfun.hackathon.avro.customersegmentation.UserProductInterest;
 import com.fabfitfun.hackathon.data.dao.HackathonDao;
 
 import lombok.AllArgsConstructor;
@@ -23,10 +24,8 @@ import javax.ws.rs.core.Response;
 
 @AllArgsConstructor
 public class HackathonService {
-  public static final String CUSTOMIZE_ASSIGNMENT_API = "CUSTOMIZE_ASSIGNMENT_API";
   private String topicName;
   private final MessageProducer<SpecificRecord> messageProducer;
-  private final HackathonDao hackathonDao;
   private final ResteasyClient client;
 
   private static final String SENTIMENT_URL = "/hugging_sentiment";
@@ -58,12 +57,11 @@ public class HackathonService {
     Float sentimentLevel = getSentiment(sentiment);
   }
 
-
   public void sendAnswerToKafka(long shopUserId, String query) {
     try {
-      val event = SentimentEvent.newBuilder()
-          .setShopUserId(shopUserId)
-          .setQuery(query)
+      val event = UserProductInterest.newBuilder()
+          .setUserId(shopUserId)
+          .setKeyword(query)
           .build();
       messageProducer.send(topicName, shopUserId + "", event);
     } catch (Exception ex) {
