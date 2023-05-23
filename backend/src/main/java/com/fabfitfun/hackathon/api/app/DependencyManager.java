@@ -15,6 +15,8 @@ import org.apache.avro.specific.SpecificRecord;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
+import org.jboss.resteasy.client.jaxrs.ResteasyClient;
+import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.sqlobject.SqlObjectPlugin;
 
@@ -76,12 +78,14 @@ class DependencyManager {
     Jdbi hackathonDb = newDatabase(factory, env, config.getWriteDatabase(), "hackathonDbWrite");
 
     AppConfig appConfig = config.getApp();
+    ResteasyClient client = new ResteasyClientBuilder().build();
 
     // dao
     val hackathonDao = hackathonDb.onDemand(HackathonDao.class);
 
     // Services
-    hackathonService = new HackathonService(hackathonDao);
+    hackathonService = new HackathonService(hackathonDao, client);
+
 
     // Managers
     val hackathonManager = new HackathonManager(hackathonService);
