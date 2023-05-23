@@ -80,12 +80,13 @@ class DependencyManager {
     AppConfig appConfig = config.getApp();
     ResteasyClient client = new ResteasyClientBuilder().build();
 
+    hackathonProducer = getHackathonProducer(kafkaConfig);
+
     // dao
     val hackathonDao = hackathonDb.onDemand(HackathonDao.class);
 
     // Services
-    hackathonService = new HackathonService(hackathonDao, client);
-
+    hackathonService = new HackathonService(HACKATHON_TOPIC, hackathonProducer, client);
 
     // Managers
     val hackathonManager = new HackathonManager(hackathonService);
@@ -94,7 +95,6 @@ class DependencyManager {
     managedExecutor = new ManagedExecutor(10);
 
     // Resources
-    hackathonProducer = getHackathonProducer(kafkaConfig);
     hackathonResource = new HackathonResource(hackathonManager);
     hackathonEventHandler = new HackathonEventHandler(hackathonManager);
     hackathonConsumer = getHackathonConsumer(config.getRetryConfig(), kafkaConfig,
