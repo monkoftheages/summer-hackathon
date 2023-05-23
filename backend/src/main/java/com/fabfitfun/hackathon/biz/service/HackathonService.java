@@ -1,12 +1,18 @@
 package com.fabfitfun.hackathon.biz.service;
 
 
+import com.fabfitfun.hackathon.api.app.kafka.MessageProducer;
+import com.fabfitfun.hackathon.api.mapper.KafkaMessageException;
 import com.fabfitfun.hackathon.api.resource.SentimentAnalysisResource;
 import com.fabfitfun.hackathon.data.dao.HackathonDao;
 
 import lombok.AllArgsConstructor;
+import lombok.val;
+import org.apache.avro.specific.SpecificRecord;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
+
+import java.util.List;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
@@ -14,6 +20,9 @@ import javax.ws.rs.core.Response;
 
 @AllArgsConstructor
 public class HackathonService {
+  public static final String CUSTOMIZE_ASSIGNMENT_API = "CUSTOMIZE_ASSIGNMENT_API";
+  private String topicName;
+  private final MessageProducer<SpecificRecord> messageProducer;
   private final HackathonDao hackathonDao;
   private final ResteasyClient client;
 
@@ -35,4 +44,16 @@ public class HackathonService {
     Float sentimentLevel = getSentiment(sentiment);
   }
 
+
+  public void sendAnswerToKafka(long shopUserId, String query) {
+    try {
+      val event = SentimentEvent.newBuilder()
+          .setShopUserId(shopUserId)
+          .setQuery(query)
+          .build();
+      messageProducer.send(topicName, shopUserId + "", event);
+    } catch (Exception ex) {
+      throw new KafkaMessageException(String.format("Error sending Answer to Kafka, %s", ex.getMessage()));
+    }
+  }
 }

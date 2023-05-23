@@ -2,6 +2,7 @@ package com.fabfitfun.hackathon.api.resource;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -37,5 +38,18 @@ public class HackathonResource {
     val string = hackathonManager.manageData();
     System.out.println("Connection returning: " + string);
     return Response.ok().entity(string).build();
+  }
+
+  @Operation(summary = "Boilerplate test endpoint")
+  @ApiResponse(responseCode = "200", description = "Success!",
+      content = @Content(schema = @Schema(implementation = Response.class)))
+  @ApiResponse(responseCode = "400", description = "Error!",
+      content = @Content(schema = @Schema(implementation = Response.class)))
+  @POST
+  @Path("/job")
+  public Response runSentimentJob() {
+    hackathonManager.runSentimentJob();
+    System.out.println("Running sentiment job");
+    return Response.ok().build();
   }
 }

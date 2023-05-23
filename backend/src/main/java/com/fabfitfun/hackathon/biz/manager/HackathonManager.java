@@ -14,4 +14,8 @@ public class HackathonManager {
     hackathonService.manageData(sentimentAnalysis);
     return "hackathon test string";
   }
+
+  public void runSentimentJob() {
+    hackathonService.sendAnswerToKafka(123L, "lipstick");
+  }
 }
