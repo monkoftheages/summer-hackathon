@@ -3,6 +3,9 @@ package com.fabfitfun.hackathon.api.app;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import com.fabfitfun.hackathon.api.app.kafka.KafkaConfig;
+import com.fabfitfun.hackathon.api.app.kafka.RetryConfig;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.dropwizard.Configuration;
@@ -25,4 +28,13 @@ class HackathonConfiguration extends Configuration {
   @Valid
   @NotNull
   private DataSourceFactory writeDatabase;
+
+  @Valid
+  @NotNull
+  @JsonIgnoreProperties("retryConfig")
+  private RetryConfig retryConfig;
+
+  @NotNull
+  @JsonProperty("kafka")
+  private KafkaConfig kafkaConfig;
 }

@@ -2,6 +2,7 @@ package com.fabfitfun.hackathon.api.app;
 
 import com.fabfitfun.hackathon.api.app.kafka.KafkaConfig;
 import com.fabfitfun.hackathon.api.app.kafka.KafkaMessageConsumer;
+import com.fabfitfun.hackathon.api.app.kafka.KafkaMessageProducer;
 import com.fabfitfun.hackathon.api.app.kafka.MessageConsumer;
 import com.fabfitfun.hackathon.api.app.kafka.MessageProducer;
 import com.fabfitfun.hackathon.api.app.kafka.RetryConfig;
@@ -51,7 +52,8 @@ import com.fabfitfun.hackathon.api.app.kafka.MessageConsumer.MessageListener;
 @JBossLog
 @Getter
 class DependencyManager {
-  public static final String HACKATHON = "hackathon-";
+  public static final String HACKATHON = "hackathon_topic-";
+  public static final String HACKATHON_TOPIC = "hackathon_topic";
 
   private static final String SCHEMA_REGISTRY_URL = "schema.registry.url";
   public final static String JASS_TEMPLATE = "org.apache.kafka.common.security.scram.ScramLoginModule required username=\"%s\" password=\"%s\";";
@@ -64,9 +66,12 @@ class DependencyManager {
   final HackathonService hackathonService;
   final ManagedExecutor managedExecutor;
   final HackathonEventHandler hackathonEventHandler;
+  final MessageConsumer<?> hackathonConsumer;
+  final MessageProducer<SpecificRecord> hackathonProducer;
 
   DependencyManager(HackathonConfiguration config, Environment env) {
     log.info("Initializing read database pool...");
+    val kafkaConfig = config.getKafkaConfig();
     final JdbiFactory factory = new JdbiFactory();
     Jdbi hackathonDb = newDatabase(factory, env, config.getWriteDatabase(), "hackathonDbWrite");
 
@@ -85,8 +90,11 @@ class DependencyManager {
     managedExecutor = new ManagedExecutor(10);
 
     // Resources
+    hackathonProducer = getHackathonProducer(kafkaConfig);
     hackathonResource = new HackathonResource(hackathonManager);
     hackathonEventHandler = new HackathonEventHandler(hackathonManager);
+    hackathonConsumer = getHackathonConsumer(config.getRetryConfig(), kafkaConfig,
+        HACKATHON_TOPIC, hackathonProducer);
   }
 
   /** Generates a new database pool. */
@@ -96,8 +104,8 @@ class DependencyManager {
     db.installPlugin(new SqlObjectPlugin());
     return db;
   }
-  private <T> MessageConsumer<T> getHackathonEventHandler(RetryConfig retryConfig, KafkaConfig kafkaConfig, String topicName,
-                                                          MessageProducer<SpecificRecord> messageProducer) {
+  private <T> MessageConsumer<T> getHackathonConsumer(RetryConfig retryConfig, KafkaConfig kafkaConfig, String topicName,
+                                                      MessageProducer<SpecificRecord> messageProducer) {
     Properties properties = getConsumerProperties(kafkaConfig);
     properties.put(CLIENT_ID_CONFIG, HACKATHON + kafkaConfig.getClientId());
     properties.put(GROUP_ID_CONFIG, HACKATHON + kafkaConfig.getGroupId());
@@ -132,5 +140,10 @@ class DependencyManager {
     configProperties.put(MAX_POLL_RECORDS_CONFIG, kafkaConfig.getConfiguration().getMaxPollRecords());
 
     return configProperties;
+  }
+
+  private <T> KafkaMessageProducer<T> getHackathonProducer(KafkaConfig kafkaConfig) {
+    Properties properties = getProducerProperties(kafkaConfig);
+    return new KafkaMessageProducer<>(properties);
   }
 }

@@ -4,7 +4,7 @@ writeDatabase:
   driverClass: software.aws.rds.jdbc.mysql.Driver
   url: jdbc:mysql://rds-dev-shop-cluster.cluster-c1yqzlng7npm.us-west-2.rds.amazonaws.com/ssoblog?zeroDateTimeBehavior=convertToNull&useSSL=false
   user: dev
-  password: {password}
+  password: Q5JsZQM&rjc4v7
 
   maxWaitForConnection: 1s
   validationQuery: "/* MyService Health Check */ SELECT 1"
@@ -27,3 +27,24 @@ server:
       selectorThreads: 1
   requestLog:
     appenders: []
+
+kafka:
+  brokers: b-1.retention-kafka-dev.qxsqdu.c5.kafka.us-west-2.amazonaws.com:9092
+  schemaRegistryHost: https://retention-kafka-schema-registry.fff-dev.com
+  topics: hackathon_topic
+  clientId: summer-hackathon-client-api
+  groupId: summer-hackathon-group-api
+  applicationId: summer-hackathon-application-api
+  configuration:
+    key.serializer: org.apache.kafka.common.serialization.StringSerializer
+    value.serializer: org.apache.kafka.common.serialization.StringSerializer
+    value.deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    key.deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    commit.interval.ms: 60000
+    max.poll.records: 100
+    session.timeout.ms: 60000
+
+
+retryConfig:
+  maxRetries: 2
+  initialPauseSeconds: 1
