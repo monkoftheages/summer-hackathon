@@ -5,7 +5,7 @@ import com.fabfitfun.hackathon.api.app.kafka.KafkaMessageConsumer;
 import com.fabfitfun.hackathon.api.app.kafka.MessageConsumer;
 import com.fabfitfun.hackathon.api.app.kafka.MessageProducer;
 import com.fabfitfun.hackathon.api.app.kafka.RetryConfig;
-import com.fabfitfun.hackathon.api.resource.HackathonConsumer;
+import com.fabfitfun.hackathon.api.resource.HackathonEventHandler;
 import io.confluent.kafka.serializers.AbstractKafkaAvroSerDeConfig;
 import io.confluent.kafka.serializers.KafkaAvroDeserializer;
 import io.confluent.kafka.serializers.KafkaAvroDeserializerConfig;
@@ -60,11 +60,10 @@ class DependencyManager {
   public final static String SASL_MECHANISM_FIELD = "sasl.mechanism";
   public final static String SASL_SSL = "SASL_SSL";
 
-  private final HackathonEventHandler hackathonEventHandler;
   final HackathonResource hackathonResource;
   final HackathonService hackathonService;
   final ManagedExecutor managedExecutor;
-  final MessageConsumer<?> hackathonConsumer;
+  final HackathonEventHandler hackathonEventHandler;
 
   DependencyManager(HackathonConfiguration config, Environment env) {
     log.info("Initializing read database pool...");
@@ -87,7 +86,7 @@ class DependencyManager {
 
     // Resources
     hackathonResource = new HackathonResource(hackathonManager);
-    hackathonConsumer = new HackathonConsumer(hackathonManager);
+    hackathonEventHandler = new HackathonEventHandler(hackathonManager);
   }
 
   /** Generates a new database pool. */
@@ -97,8 +96,8 @@ class DependencyManager {
     db.installPlugin(new SqlObjectPlugin());
     return db;
   }
-  private <T> MessageConsumer<T> getHackathonConsumer(RetryConfig retryConfig, KafkaConfig kafkaConfig, String topicName,
-                                                      MessageProducer<SpecificRecord> messageProducer) {
+  private <T> MessageConsumer<T> getHackathonEventHandler(RetryConfig retryConfig, KafkaConfig kafkaConfig, String topicName,
+                                                          MessageProducer<SpecificRecord> messageProducer) {
     Properties properties = getConsumerProperties(kafkaConfig);
     properties.put(CLIENT_ID_CONFIG, HACKATHON + kafkaConfig.getClientId());
     properties.put(GROUP_ID_CONFIG, HACKATHON + kafkaConfig.getGroupId());
