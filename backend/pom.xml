@@ -28,6 +28,7 @@
     <junit.platform.version>1.5.2</junit.platform.version>
     <atmosphere-version>2.6.1</atmosphere-version>
     <aws.mysql.driver.version>1.1.5</aws.mysql.driver.version>
+    <avro.version>1.10.1</avro.version>
   </properties>
 
   <dependencies>
@@ -46,6 +47,17 @@
       <groupId>org.eclipse.jetty.websocket</groupId>
       <artifactId>websocket-server</artifactId>
       <version>9.4.14.v20181114</version>
+    </dependency>
+    <!-- AVRO -->
+    <dependency>
+      <groupId>org.apache.avro</groupId>
+      <artifactId>avro-maven-plugin</artifactId>
+      <version>${avro.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.avro</groupId>
+      <artifactId>avro</artifactId>
+      <version>${avro.version}</version>
     </dependency>
     <!-- 3rd Party -->
     <dependency>
@@ -286,6 +298,28 @@
                   <mainClass>${mainClass}</mainClass>
                 </transformer>
               </transformers>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.avro</groupId>
+        <artifactId>avro-maven-plugin</artifactId>
+        <version>${avro.version}</version>
+        <executions>
+          <execution>
+            <id>schemas</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>schema</goal>
+              <goal>protocol</goal>
+              <goal>idl-protocol</goal>
+            </goals>
+            <configuration>
+              <stringType>String</stringType>
+              <sourceDirectory>${project.basedir}/src/main/resources/avro</sourceDirectory>
+              <outputDirectory>${project.basedir}/src/main/java/</outputDirectory>
             </configuration>
           </execution>
         </executions>
