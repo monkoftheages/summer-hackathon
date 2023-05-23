@@ -13,7 +13,7 @@ public class HackathonConsumer implements EventHandler<SentimentEvent> {
 
   @Override
   public void handleEvent(String shopUserIdStr, SentimentEvent sentimentEvent, Headers headers) {
-    if (validEvent(answerEvent)) {
+    if (validEvent(sentimentEvent)) {
       long shopUserId = Long.parseLong(shopUserIdStr);
 //      log.debugf("Received answer event. Shop User Id: %d", shopUserId);
       
@@ -24,12 +24,7 @@ public class HackathonConsumer implements EventHandler<SentimentEvent> {
   }
 
   @VisibleForTesting
-  boolean validEvent(AnswerEvent answerEvent) {
-    if (answerEvent == null ||
-        answerEvent.getAnswerList() == null ||
-        answerEvent.getAnswerList().isEmpty()) {
-      return false;
-    }
+  boolean validEvent(SentimentEvent answerEvent) {
     return true;
   }
 }
