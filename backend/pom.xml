@@ -27,6 +27,7 @@
     <junit.jupiter.version>5.5.2</junit.jupiter.version>
     <junit.platform.version>1.5.2</junit.platform.version>
     <atmosphere-version>2.6.1</atmosphere-version>
+    <avro.version>1.10.1</avro.version>
     <aws.mysql.driver.version>1.1.5</aws.mysql.driver.version>
     <avro.version>1.10.1</avro.version>
   </properties>
@@ -122,7 +123,27 @@
       <artifactId>dropwizard-jdbi3</artifactId>
       <version>${dropwizard.version}</version>
     </dependency>
-
+    <dependency>
+      <groupId>org.apache.avro</groupId>
+      <artifactId>avro-maven-plugin</artifactId>
+      <version>${avro.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.avro</groupId>
+      <artifactId>avro</artifactId>
+      <version>${avro.version}</version>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.kafka</groupId>
+        <artifactId>kafka-clients</artifactId>
+        <version>3.4.0</version>
+    </dependency>
+    <dependency>
+        <groupId>io.confluent</groupId>
+        <artifactId>kafka-avro-serializer</artifactId>
+        <version>5.3.0</version>
+    </dependency>
+    
     <!-- Dropwizard JAR shader/bundler. -->
     <dependency>
       <groupId>io.dropwizard-bundles</groupId>
