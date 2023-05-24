@@ -7,6 +7,7 @@ import com.fabfitfun.hackathon.api.app.kafka.MessageConsumer;
 import com.fabfitfun.hackathon.api.app.kafka.MessageProducer;
 import com.fabfitfun.hackathon.api.app.kafka.RetryConfig;
 import com.fabfitfun.hackathon.api.resource.HackathonEventHandler;
+import com.fabfitfun.hackathon.data.dao.SentimentResource;
 import com.mongodb.client.MongoCollection;
 import io.confluent.kafka.serializers.AbstractKafkaAvroSerDeConfig;
 import io.confluent.kafka.serializers.KafkaAvroDeserializer;
@@ -176,8 +177,8 @@ class DependencyManager {
     try (MongoClient mongoClient = MongoClients.create(settings)) {
       try {
         // Send a ping to confirm a successful connection
-        MongoDatabase database = mongoClient.getDatabase("admin");
-        return database.getCollection("user_sentiment");
+        MongoDatabase database = mongoClient.getDatabase("user_sentiment");
+        return database.getCollection("user_sentiment", SentimentResource.class);
       } catch (MongoException e) {
         e.printStackTrace();
       }
