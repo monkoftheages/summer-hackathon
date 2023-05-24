@@ -36,11 +36,23 @@ public class HackathonResource {
   @ApiResponse(responseCode = "400", description = "Error!",
       content = @Content(schema = @Schema(implementation = Response.class)))
   @GET
+  @Path("/questions/{questionId}")
+  public Response getQuestionData(@PathParam("questionId") @NotNull String questionId) {
+    val question = hackathonManager.getQuestionData(questionId);
+    val questionJson = new Gson().toJson(question);
+    return Response.ok().entity(questionJson).build();
+  }
+
+  @Operation(summary = "Boilerplate test endpoint")
+  @ApiResponse(responseCode = "200", description = "Success!",
+      content = @Content(schema = @Schema(implementation = Response.class)))
+  @ApiResponse(responseCode = "400", description = "Error!",
+      content = @Content(schema = @Schema(implementation = Response.class)))
+  @GET
   @Path("/questions")
   public Response getResults() {
     val questions = hackathonManager.getQuestions();
     val questionJson = new Gson().toJson(questions);
-    System.out.println(questions);
     return Response.ok().entity(questionJson).build();
   }
 

@@ -2,6 +2,7 @@ package com.fabfitfun.hackathon.biz.manager;
 
 import com.fabfitfun.hackathon.biz.service.HackathonService;
 
+import com.fabfitfun.hackathon.data.QuestionDataDto;
 import com.fabfitfun.hackathon.data.QuestionDto;
 import com.fabfitfun.hackathon.data.QuestionListDto;
 import com.fabfitfun.hackathon.data.SentimentList;
@@ -47,6 +48,16 @@ public class HackathonManager {
         .build();
     return QuestionListDto.builder()
         .questions(Arrays.asList(question1, question2))
+        .build();
+  }
+
+  public QuestionDataDto getQuestionData(String questionId) {
+    return QuestionDataDto.builder()
+        .questionId("1")
+        .query("Will this user like lipstick?")
+        .averageSentiment(55)
+        .percentageHighSentiment(30)
+        .highSentimentTraits("old")
         .build();
   }
 }
