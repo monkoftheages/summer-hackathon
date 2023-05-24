@@ -62,6 +62,8 @@ public class HackathonService {
   }
 
   public List<Long> getUsers(String query, int minimumLevel) {
-    return hackathonDao.getUserIds(query, minimumLevel);
+    List<Long> result = hackathonDao.getUserIds(query, minimumLevel);
+    return null;
+//    return hackathonDao.getUserIds(query, minimumLevel);
   }
 }

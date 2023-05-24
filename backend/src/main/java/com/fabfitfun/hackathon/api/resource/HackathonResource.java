@@ -58,19 +58,6 @@ public class HackathonResource {
       content = @Content(schema = @Schema(implementation = Response.class)))
   @ApiResponse(responseCode = "400", description = "Error!",
       content = @Content(schema = @Schema(implementation = Response.class)))
-  @GET
-  @Path("/results/query/{query}/level/{level}")
-  public Response getResults(@PathParam("query") @NotNull String query,
-                             @PathParam("level") @NotNull Integer level) {
-    val results = hackathonManager.getResults(query, level);
-    return Response.ok().entity(results).build();
-  }
-
-  @Operation(summary = "Boilerplate test endpoint")
-  @ApiResponse(responseCode = "200", description = "Success!",
-      content = @Content(schema = @Schema(implementation = Response.class)))
-  @ApiResponse(responseCode = "400", description = "Error!",
-      content = @Content(schema = @Schema(implementation = Response.class)))
   @POST
   @Path("/job")
   public Response runSentimentJob(String query) {
