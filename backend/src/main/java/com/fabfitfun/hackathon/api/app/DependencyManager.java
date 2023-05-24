@@ -18,6 +18,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
+import org.eclipse.jetty.servlets.CrossOriginFilter;
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.sqlobject.SqlObjectPlugin;
 
@@ -33,6 +34,7 @@ import lombok.Getter;
 import lombok.val;
 import lombok.extern.jbosslog.JBossLog;
 
+import java.util.EnumSet;
 import java.util.Properties;
 
 import com.mongodb.ConnectionString;
@@ -54,6 +56,9 @@ import static org.apache.kafka.clients.consumer.ConsumerConfig.MAX_POLL_RECORDS_
 import static org.apache.kafka.clients.consumer.ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG;
 
 import com.fabfitfun.hackathon.api.app.kafka.MessageConsumer.MessageListener;
+
+import javax.servlet.DispatcherType;
+import javax.servlet.FilterRegistration;
 
 /**
  * Guice without Guice.
@@ -87,6 +92,7 @@ class DependencyManager {
     final JdbiFactory factory = new JdbiFactory();
 //    Jdbi hackathonDb = newDatabase(factory, env, config.getWriteDatabase(), "hackathonDbWrite");
     val hackathonDb = createDatabase();
+    configureCors(env);
 
     AppConfig appConfig = config.getApp();
     val client = HttpClients.createDefault();
@@ -111,6 +117,22 @@ class DependencyManager {
     hackathonEventHandler = new HackathonEventHandler(hackathonManager);
     hackathonConsumer = getHackathonConsumer(config.getRetryConfig(), kafkaConfig,
         HACKATHON_TOPIC, hackathonProducer);
+  }
+
+
+  private void configureCors(Environment environment) {
+    final FilterRegistration.Dynamic cors =
+            environment.servlets().addFilter("CORS", CrossOriginFilter.class);
+
+    // Configure CORS parameters
+    cors.setInitParameter(CrossOriginFilter.ALLOWED_ORIGINS_PARAM, "*");
+    cors.setInitParameter(CrossOriginFilter.ALLOWED_HEADERS_PARAM, "X-Requested-With,Content-Type,Accept,Origin,Authorization");
+    cors.setInitParameter(CrossOriginFilter.ALLOWED_METHODS_PARAM, "OPTIONS,GET,PUT,POST,DELETE,HEAD");
+    cors.setInitParameter(CrossOriginFilter.ALLOW_CREDENTIALS_PARAM, "true");
+
+    // Add URL mapping
+    cors.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "/*");
+
   }
 
   /** Generates a new database pool. */
