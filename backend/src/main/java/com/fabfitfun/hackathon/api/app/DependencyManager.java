@@ -7,6 +7,7 @@ import com.fabfitfun.hackathon.api.app.kafka.MessageConsumer;
 import com.fabfitfun.hackathon.api.app.kafka.MessageProducer;
 import com.fabfitfun.hackathon.api.app.kafka.RetryConfig;
 import com.fabfitfun.hackathon.api.resource.HackathonEventHandler;
+import com.fabfitfun.hackathon.data.dao.LocalDao;
 import com.fabfitfun.hackathon.data.dao.SentimentResource;
 import com.mongodb.client.MongoCollection;
 import io.confluent.kafka.serializers.AbstractKafkaAvroSerDeConfig;
@@ -85,7 +86,7 @@ class DependencyManager {
     log.info("Initializing read database pool...");
     val kafkaConfig = config.getKafkaConfig();
     final JdbiFactory factory = new JdbiFactory();
-//    Jdbi hackathonDb = newDatabase(factory, env, config.getWriteDatabase(), "hackathonDbWrite");
+    Jdbi hackathonDbJdbi = newDatabase(factory, env, config.getWriteDatabase(), "hackathonDbWrite");
     val hackathonDb = createDatabase();
 
     AppConfig appConfig = config.getApp();
@@ -94,11 +95,12 @@ class DependencyManager {
     hackathonProducer = getHackathonProducer(kafkaConfig);
 
     // dao
+    val localDao = hackathonDbJdbi.onDemand(LocalDao.class);
     val hackathonDao = new HackathonDao(hackathonDb);
 
     // Services
     hackathonService = new HackathonService(HACKATHON_TOPIC, hackathonProducer, client,
-        hackathonDao);
+        hackathonDao, localDao);
 
     // Managers
     val hackathonManager = new HackathonManager(hackathonService);

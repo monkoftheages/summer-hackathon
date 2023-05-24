@@ -8,6 +8,7 @@ import com.fabfitfun.hackathon.avro.customersegmentation.UserProductInterest;
 import com.fabfitfun.hackathon.data.QuestionDto;
 import com.fabfitfun.hackathon.data.QuestionListDto;
 import com.fabfitfun.hackathon.data.dao.HackathonDao;
+import com.fabfitfun.hackathon.data.dao.LocalDao;
 import lombok.AllArgsConstructor;
 import lombok.val;
 import org.apache.avro.specific.SpecificRecord;
@@ -25,6 +26,7 @@ public class HackathonService {
   private final MessageProducer<SpecificRecord> messageProducer;
   private final HttpClient client;
   private final HackathonDao hackathonDao;
+  private final LocalDao localDao;
 
   private static final String SENTIMENT_URL = "https://11e7-98-153-114-3.ngrok.io/hugging_sentiment";
   private static final String USER_ID = "user_id";
@@ -41,7 +43,7 @@ public class HackathonService {
           .setUri(SENTIMENT_URL)
           .setEntity(new StringEntity(data, ContentType.APPLICATION_JSON))
           .build();
-      client.execute(request);
+      val response = client.execute(request);
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
