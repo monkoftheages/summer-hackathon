@@ -3,6 +3,8 @@ package com.fabfitfun.hackathon.data;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @Builder
 public class QuestionDataDto {
@@ -11,4 +13,5 @@ public class QuestionDataDto {
   private int averageSentiment;
   private int percentageHighSentiment;
   private String highSentimentTraits;
+  private List<Long> highSentimentUsers;
 }

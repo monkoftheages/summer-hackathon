@@ -57,11 +57,12 @@ public class HackathonManager {
 
   public QuestionDataDto getQuestionData(String questionId) {
     return QuestionDataDto.builder()
-        .questionId("1")
+        .questionId(questionId)
         .query("Will this user like lipstick?")
         .averageSentiment(55)
         .percentageHighSentiment(30)
         .highSentimentTraits("old")
+        .highSentimentUsers(Arrays.asList(123L, 456L))
         .build();
   }
 }

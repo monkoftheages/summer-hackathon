@@ -8,3 +8,5 @@ backend/.idea/
 *.html
 
 backend/target/
+
+backend/summer-hackathon-api.iml
