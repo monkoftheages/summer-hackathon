@@ -9,62 +9,50 @@ import com.fabfitfun.hackathon.data.dao.HackathonDao;
 import lombok.AllArgsConstructor;
 import lombok.val;
 import org.apache.avro.specific.SpecificRecord;
-import org.apache.http.client.utils.URIBuilder;
-import org.jboss.resteasy.client.jaxrs.ResteasyClient;
-import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.client.methods.RequestBuilder;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.List;
-
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
 @AllArgsConstructor
 public class HackathonService {
   private String topicName;
   private final MessageProducer<SpecificRecord> messageProducer;
-  private final ResteasyClient client;
+  private final HttpClient client;
   private final HackathonDao hackathonDao;
 
-  private static final String SENTIMENT_URL = "ae18-98-153-114-3.ngrok.io/hugging_sentiment";
+  private static final String SENTIMENT_URL = "https://11e7-98-153-114-3.ngrok.io/hugging_sentiment";
   private static final String USER_ID = "user_id";
   private static final String PRODUCT_KEYWORD = "product_keyword";
 
-  private Float getSentiment(long shopUserId, String keyword) {
+  public void manageData(long shopUserId, String query, String questionId) {
     try {
-      URI uri = null;
-      uri = new URIBuilder()
-          .setScheme("https")
-          .setHost(SENTIMENT_URL)
-          .addParameter(USER_ID, shopUserId + "")
-          .addParameter(PRODUCT_KEYWORD, keyword)
+      val data = "{\n" +
+          "  \"user_id\": " + shopUserId + ",\n" +
+          "  \"user_query_id\": \"" + questionId + "\",\n" +
+          "  \"user_query\": \"" + query + "\"\n" +
+          "}";
+      HttpUriRequest request = RequestBuilder.create("POST")
+          .setUri(SENTIMENT_URL)
+          .setEntity(new StringEntity(data, ContentType.APPLICATION_JSON))
           .build();
-      ResteasyWebTarget target = client.target(uri);
-      Response response = target.request(MediaType.APPLICATION_JSON)
-              .get();
-
-      if (response.getStatus() == 200) {
-        return 1f;
-//        return response.readEntity(Float.class);
-      } else {
-        throw new RuntimeException("Failed to perform sentiment analysis. HTTP error code: " + response.getStatus());
-      }
-    } catch (URISyntaxException e) {
+      client.execute(request);
+    } catch (Exception e) {
       throw new RuntimeException(e);
     }
   }
 
-  public void manageData(long shopUserId, String keyword) {
-    Float sentimentLevel = getSentiment(shopUserId, keyword);
-  }
-
-  public void sendAnswerToKafka(long shopUserId, String keyword) {
+  public void sendAnswerToKafka(long shopUserId, String query, String questionId) {
     try {
       val event = UserProductInterest.newBuilder()
           .setUserId(shopUserId)
-          .setKeyword(keyword)
+          .setQuestion(query)
+          .setQuestionId(questionId)
           .build();
+      System.out.println("Hackathon Producer: Sending kafka event for query: " + query + " shop user id: " + shopUserId);
       messageProducer.send(topicName, shopUserId + "", event);
     } catch (Exception ex) {
       throw new KafkaMessageException(String.format("Error sending Answer to Kafka, %s", ex.getMessage()));

@@ -47,4 +47,4 @@ kafka:
 
 retryConfig:
   maxRetries: 2
-  initialPauseSeconds: 1
+  initialPauseSeconds: 0

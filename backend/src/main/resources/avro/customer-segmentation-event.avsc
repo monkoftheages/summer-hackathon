@@ -8,7 +8,11 @@
       "type": "long"
     },
     {
-      "name": "keyword",
+      "name": "question",
+      "type": "string"
+    },
+    {
+      "name": "questionId",
       "type": "string"
     }
   ]

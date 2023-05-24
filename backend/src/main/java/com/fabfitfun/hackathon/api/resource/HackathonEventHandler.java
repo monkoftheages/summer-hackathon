@@ -15,13 +15,10 @@ public class HackathonEventHandler implements EventHandler<UserProductInterest> 
   public void handleEvent(String shopUserIdStr, UserProductInterest sentimentEvent, Headers headers) {
     if (validEvent(sentimentEvent)) {
       long shopUserId = Long.parseLong(shopUserIdStr);
-//      log.debugf("Received answer event. Shop User Id: %d", shopUserId);
-
-      hackathonManager.manageData(shopUserId, sentimentEvent.getKeyword());
-      
-//      hackathonManager.handleEvent(shopUserId, sentimentEvent);
-      
-//      log.debugf("Processed answer event. Shop User Id: %d", shopUserId);
+      System.out.println("Hackathon Consumer: \n\tProcessing kafka event for query: "
+          + sentimentEvent.getQuestion()
+          + ",\n\tshop user id: " + shopUserId);
+      hackathonManager.handleEvent(shopUserId, sentimentEvent.getQuestion(), sentimentEvent.getQuestionId());
     }
   }
 

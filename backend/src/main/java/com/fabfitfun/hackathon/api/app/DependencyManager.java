@@ -14,11 +14,10 @@ import io.confluent.kafka.serializers.KafkaAvroDeserializer;
 import io.confluent.kafka.serializers.KafkaAvroDeserializerConfig;
 import io.confluent.kafka.serializers.KafkaAvroSerializer;
 import org.apache.avro.specific.SpecificRecord;
+import org.apache.http.impl.client.HttpClients;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
-import org.jboss.resteasy.client.jaxrs.ResteasyClient;
-import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.sqlobject.SqlObjectPlugin;
 
@@ -90,7 +89,7 @@ class DependencyManager {
     val hackathonDb = createDatabase();
 
     AppConfig appConfig = config.getApp();
-    ResteasyClient client = new ResteasyClientBuilder().build();
+    val client = HttpClients.createDefault();
 
     hackathonProducer = getHackathonProducer(kafkaConfig);
 

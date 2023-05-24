@@ -14,8 +14,8 @@ import org.apache.avro.message.SchemaStore;
 
 @org.apache.avro.specific.AvroGenerated
 public class UserProductInterest extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = 2405189234137060556L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"UserProductInterest\",\"namespace\":\"com.fabfitfun.hackathon.avro.customersegmentation\",\"fields\":[{\"name\":\"userId\",\"type\":\"long\"},{\"name\":\"keyword\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}]}");
+  private static final long serialVersionUID = 1649486574280878700L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"UserProductInterest\",\"namespace\":\"com.fabfitfun.hackathon.avro.customersegmentation\",\"fields\":[{\"name\":\"userId\",\"type\":\"long\"},{\"name\":\"question\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"questionId\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static SpecificData MODEL$ = new SpecificData();
@@ -72,7 +72,8 @@ public class UserProductInterest extends org.apache.avro.specific.SpecificRecord
   }
 
    private long userId;
-   private java.lang.String keyword;
+   private java.lang.String question;
+   private java.lang.String questionId;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -84,11 +85,13 @@ public class UserProductInterest extends org.apache.avro.specific.SpecificRecord
   /**
    * All-args constructor.
    * @param userId The new value for userId
-   * @param keyword The new value for keyword
+   * @param question The new value for question
+   * @param questionId The new value for questionId
    */
-  public UserProductInterest(java.lang.Long userId, java.lang.String keyword) {
+  public UserProductInterest(java.lang.Long userId, java.lang.String question, java.lang.String questionId) {
     this.userId = userId;
-    this.keyword = keyword;
+    this.question = question;
+    this.questionId = questionId;
   }
 
   public org.apache.avro.specific.SpecificData getSpecificData() { return MODEL$; }
@@ -97,7 +100,8 @@ public class UserProductInterest extends org.apache.avro.specific.SpecificRecord
   public java.lang.Object get(int field$) {
     switch (field$) {
     case 0: return userId;
-    case 1: return keyword;
+    case 1: return question;
+    case 2: return questionId;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
@@ -107,7 +111,8 @@ public class UserProductInterest extends org.apache.avro.specific.SpecificRecord
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
     case 0: userId = (java.lang.Long)value$; break;
-    case 1: keyword = value$ != null ? value$.toString() : null; break;
+    case 1: question = value$ != null ? value$.toString() : null; break;
+    case 2: questionId = value$ != null ? value$.toString() : null; break;
     default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
@@ -130,20 +135,37 @@ public class UserProductInterest extends org.apache.avro.specific.SpecificRecord
   }
 
   /**
-   * Gets the value of the 'keyword' field.
-   * @return The value of the 'keyword' field.
+   * Gets the value of the 'question' field.
+   * @return The value of the 'question' field.
    */
-  public java.lang.String getKeyword() {
-    return keyword;
+  public java.lang.String getQuestion() {
+    return question;
   }
 
 
   /**
-   * Sets the value of the 'keyword' field.
+   * Sets the value of the 'question' field.
    * @param value the value to set.
    */
-  public void setKeyword(java.lang.String value) {
-    this.keyword = value;
+  public void setQuestion(java.lang.String value) {
+    this.question = value;
+  }
+
+  /**
+   * Gets the value of the 'questionId' field.
+   * @return The value of the 'questionId' field.
+   */
+  public java.lang.String getQuestionId() {
+    return questionId;
+  }
+
+
+  /**
+   * Sets the value of the 'questionId' field.
+   * @param value the value to set.
+   */
+  public void setQuestionId(java.lang.String value) {
+    this.questionId = value;
   }
 
   /**
@@ -188,7 +210,8 @@ public class UserProductInterest extends org.apache.avro.specific.SpecificRecord
     implements org.apache.avro.data.RecordBuilder<UserProductInterest> {
 
     private long userId;
-    private java.lang.String keyword;
+    private java.lang.String question;
+    private java.lang.String questionId;
 
     /** Creates a new Builder */
     private Builder() {
@@ -205,9 +228,13 @@ public class UserProductInterest extends org.apache.avro.specific.SpecificRecord
         this.userId = data().deepCopy(fields()[0].schema(), other.userId);
         fieldSetFlags()[0] = other.fieldSetFlags()[0];
       }
-      if (isValidValue(fields()[1], other.keyword)) {
-        this.keyword = data().deepCopy(fields()[1].schema(), other.keyword);
+      if (isValidValue(fields()[1], other.question)) {
+        this.question = data().deepCopy(fields()[1].schema(), other.question);
         fieldSetFlags()[1] = other.fieldSetFlags()[1];
+      }
+      if (isValidValue(fields()[2], other.questionId)) {
+        this.questionId = data().deepCopy(fields()[2].schema(), other.questionId);
+        fieldSetFlags()[2] = other.fieldSetFlags()[2];
       }
     }
 
@@ -221,9 +248,13 @@ public class UserProductInterest extends org.apache.avro.specific.SpecificRecord
         this.userId = data().deepCopy(fields()[0].schema(), other.userId);
         fieldSetFlags()[0] = true;
       }
-      if (isValidValue(fields()[1], other.keyword)) {
-        this.keyword = data().deepCopy(fields()[1].schema(), other.keyword);
+      if (isValidValue(fields()[1], other.question)) {
+        this.question = data().deepCopy(fields()[1].schema(), other.question);
         fieldSetFlags()[1] = true;
+      }
+      if (isValidValue(fields()[2], other.questionId)) {
+        this.questionId = data().deepCopy(fields()[2].schema(), other.questionId);
+        fieldSetFlags()[2] = true;
       }
     }
 
@@ -267,42 +298,82 @@ public class UserProductInterest extends org.apache.avro.specific.SpecificRecord
     }
 
     /**
-      * Gets the value of the 'keyword' field.
+      * Gets the value of the 'question' field.
       * @return The value.
       */
-    public java.lang.String getKeyword() {
-      return keyword;
+    public java.lang.String getQuestion() {
+      return question;
     }
 
 
     /**
-      * Sets the value of the 'keyword' field.
-      * @param value The value of 'keyword'.
+      * Sets the value of the 'question' field.
+      * @param value The value of 'question'.
       * @return This builder.
       */
-    public com.fabfitfun.hackathon.avro.customersegmentation.UserProductInterest.Builder setKeyword(java.lang.String value) {
+    public com.fabfitfun.hackathon.avro.customersegmentation.UserProductInterest.Builder setQuestion(java.lang.String value) {
       validate(fields()[1], value);
-      this.keyword = value;
+      this.question = value;
       fieldSetFlags()[1] = true;
       return this;
     }
 
     /**
-      * Checks whether the 'keyword' field has been set.
-      * @return True if the 'keyword' field has been set, false otherwise.
+      * Checks whether the 'question' field has been set.
+      * @return True if the 'question' field has been set, false otherwise.
       */
-    public boolean hasKeyword() {
+    public boolean hasQuestion() {
       return fieldSetFlags()[1];
     }
 
 
     /**
-      * Clears the value of the 'keyword' field.
+      * Clears the value of the 'question' field.
       * @return This builder.
       */
-    public com.fabfitfun.hackathon.avro.customersegmentation.UserProductInterest.Builder clearKeyword() {
-      keyword = null;
+    public com.fabfitfun.hackathon.avro.customersegmentation.UserProductInterest.Builder clearQuestion() {
+      question = null;
       fieldSetFlags()[1] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'questionId' field.
+      * @return The value.
+      */
+    public java.lang.String getQuestionId() {
+      return questionId;
+    }
+
+
+    /**
+      * Sets the value of the 'questionId' field.
+      * @param value The value of 'questionId'.
+      * @return This builder.
+      */
+    public com.fabfitfun.hackathon.avro.customersegmentation.UserProductInterest.Builder setQuestionId(java.lang.String value) {
+      validate(fields()[2], value);
+      this.questionId = value;
+      fieldSetFlags()[2] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'questionId' field has been set.
+      * @return True if the 'questionId' field has been set, false otherwise.
+      */
+    public boolean hasQuestionId() {
+      return fieldSetFlags()[2];
+    }
+
+
+    /**
+      * Clears the value of the 'questionId' field.
+      * @return This builder.
+      */
+    public com.fabfitfun.hackathon.avro.customersegmentation.UserProductInterest.Builder clearQuestionId() {
+      questionId = null;
+      fieldSetFlags()[2] = false;
       return this;
     }
 
@@ -312,7 +383,8 @@ public class UserProductInterest extends org.apache.avro.specific.SpecificRecord
       try {
         UserProductInterest record = new UserProductInterest();
         record.userId = fieldSetFlags()[0] ? this.userId : (java.lang.Long) defaultValue(fields()[0]);
-        record.keyword = fieldSetFlags()[1] ? this.keyword : (java.lang.String) defaultValue(fields()[1]);
+        record.question = fieldSetFlags()[1] ? this.question : (java.lang.String) defaultValue(fields()[1]);
+        record.questionId = fieldSetFlags()[2] ? this.questionId : (java.lang.String) defaultValue(fields()[2]);
         return record;
       } catch (org.apache.avro.AvroMissingFieldException e) {
         throw e;
@@ -347,7 +419,9 @@ public class UserProductInterest extends org.apache.avro.specific.SpecificRecord
   {
     out.writeLong(this.userId);
 
-    out.writeString(this.keyword);
+    out.writeString(this.question);
+
+    out.writeString(this.questionId);
 
   }
 
@@ -358,17 +432,23 @@ public class UserProductInterest extends org.apache.avro.specific.SpecificRecord
     if (fieldOrder == null) {
       this.userId = in.readLong();
 
-      this.keyword = in.readString();
+      this.question = in.readString();
+
+      this.questionId = in.readString();
 
     } else {
-      for (int i = 0; i < 2; i++) {
+      for (int i = 0; i < 3; i++) {
         switch (fieldOrder[i].pos()) {
         case 0:
           this.userId = in.readLong();
           break;
 
         case 1:
-          this.keyword = in.readString();
+          this.question = in.readString();
+          break;
+
+        case 2:
+          this.questionId = in.readString();
           break;
 
         default:

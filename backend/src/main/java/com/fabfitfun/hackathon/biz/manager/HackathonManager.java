@@ -11,8 +11,8 @@ import lombok.val;
 public class HackathonManager {
   private final HackathonService hackathonService;
 
-  public void manageData(Long shopUserId, String keyword) {
-    hackathonService.manageData(shopUserId, keyword);
+  public void handleEvent(Long shopUserId, String query, String questionId) {
+    hackathonService.manageData(shopUserId, query, questionId);
   }
 
   public SentimentList getResults(String query, int minimumLevel) {
@@ -23,10 +23,12 @@ public class HackathonManager {
         .build();
   }
 
-  public void runSentimentJob(String keyword) {
-//    hackathonService.sendAnswerToKafka(470072L, keyword);
-    for (long shopUserId : UsersToTest.SMALL_USERS_TO_TEST) {
-      hackathonService.sendAnswerToKafka(shopUserId, keyword);
-    }
+  public void runSentimentJob(String query) {
+    val questionId = "test";
+//    hackathonService.sendAnswerToKafka(470072L, query, questionId);
+    hackathonService.manageData(470072L, query, questionId);
+//    for (long shopUserId : UsersToTest.SMALL_USERS_TO_TEST) {
+//      hackathonService.sendAnswerToKafka(shopUserId, query);
+//    }
   }
 }
