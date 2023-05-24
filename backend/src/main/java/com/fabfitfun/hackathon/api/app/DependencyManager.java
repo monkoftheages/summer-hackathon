@@ -1,49 +1,5 @@
 package com.fabfitfun.hackathon.api.app;
 
-import com.fabfitfun.hackathon.api.app.kafka.KafkaConfig;
-import com.fabfitfun.hackathon.api.app.kafka.KafkaMessageConsumer;
-import com.fabfitfun.hackathon.api.app.kafka.KafkaMessageProducer;
-import com.fabfitfun.hackathon.api.app.kafka.MessageConsumer;
-import com.fabfitfun.hackathon.api.app.kafka.MessageProducer;
-import com.fabfitfun.hackathon.api.app.kafka.RetryConfig;
-import com.fabfitfun.hackathon.api.resource.HackathonEventHandler;
-import com.fabfitfun.hackathon.data.dao.SentimentResource;
-import com.mongodb.client.MongoCollection;
-import io.confluent.kafka.serializers.AbstractKafkaAvroSerDeConfig;
-import io.confluent.kafka.serializers.KafkaAvroDeserializer;
-import io.confluent.kafka.serializers.KafkaAvroDeserializerConfig;
-import io.confluent.kafka.serializers.KafkaAvroSerializer;
-import org.apache.avro.specific.SpecificRecord;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.kafka.clients.producer.ProducerConfig;
-import org.apache.kafka.common.serialization.StringDeserializer;
-import org.apache.kafka.common.serialization.StringSerializer;
-import org.jdbi.v3.core.Jdbi;
-import org.jdbi.v3.sqlobject.SqlObjectPlugin;
-
-import com.fabfitfun.hackathon.api.resource.HackathonResource;
-import com.fabfitfun.hackathon.biz.manager.HackathonManager;
-import com.fabfitfun.hackathon.biz.service.HackathonService;
-import com.fabfitfun.hackathon.data.dao.HackathonDao;
-
-import io.dropwizard.db.DataSourceFactory;
-import io.dropwizard.jdbi3.JdbiFactory;
-import io.dropwizard.setup.Environment;
-import lombok.Getter;
-import lombok.val;
-import lombok.extern.jbosslog.JBossLog;
-
-import java.util.Properties;
-
-import com.mongodb.ConnectionString;
-import com.mongodb.MongoClientSettings;
-import com.mongodb.MongoException;
-import com.mongodb.ServerApi;
-import com.mongodb.ServerApiVersion;
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoDatabase;
-
 import static org.apache.kafka.clients.consumer.ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG;
 import static org.apache.kafka.clients.consumer.ConsumerConfig.CLIENT_ID_CONFIG;
 import static org.apache.kafka.clients.consumer.ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG;
@@ -53,7 +9,48 @@ import static org.apache.kafka.clients.consumer.ConsumerConfig.MAX_POLL_INTERVAL
 import static org.apache.kafka.clients.consumer.ConsumerConfig.MAX_POLL_RECORDS_CONFIG;
 import static org.apache.kafka.clients.consumer.ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG;
 
+import com.fabfitfun.hackathon.api.app.kafka.KafkaConfig;
+import com.fabfitfun.hackathon.api.app.kafka.KafkaMessageConsumer;
+import com.fabfitfun.hackathon.api.app.kafka.KafkaMessageProducer;
+import com.fabfitfun.hackathon.api.app.kafka.MessageConsumer;
 import com.fabfitfun.hackathon.api.app.kafka.MessageConsumer.MessageListener;
+import com.fabfitfun.hackathon.api.app.kafka.MessageProducer;
+import com.fabfitfun.hackathon.api.app.kafka.RetryConfig;
+import com.fabfitfun.hackathon.api.resource.HackathonEventHandler;
+import com.fabfitfun.hackathon.api.resource.HackathonResource;
+import com.fabfitfun.hackathon.biz.manager.HackathonManager;
+import com.fabfitfun.hackathon.biz.service.HackathonService;
+import com.fabfitfun.hackathon.data.dao.HackathonDao;
+import com.mongodb.ConnectionString;
+import com.mongodb.MongoClientSettings;
+import com.mongodb.MongoException;
+import com.mongodb.ServerApi;
+import com.mongodb.ServerApiVersion;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
+import io.confluent.kafka.serializers.AbstractKafkaAvroSerDeConfig;
+import io.confluent.kafka.serializers.KafkaAvroDeserializer;
+import io.confluent.kafka.serializers.KafkaAvroDeserializerConfig;
+import io.confluent.kafka.serializers.KafkaAvroSerializer;
+import io.dropwizard.db.DataSourceFactory;
+import io.dropwizard.jdbi3.JdbiFactory;
+import io.dropwizard.setup.Environment;
+import java.util.Properties;
+import lombok.Getter;
+import lombok.extern.jbosslog.JBossLog;
+import lombok.val;
+import org.apache.avro.specific.SpecificRecord;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.common.serialization.StringDeserializer;
+import org.apache.kafka.common.serialization.StringSerializer;
+import org.bson.Document;
+import org.bson.conversions.Bson;
+import org.jdbi.v3.core.Jdbi;
+import org.jdbi.v3.sqlobject.SqlObjectPlugin;
 
 /**
  * Guice without Guice.
@@ -101,7 +98,7 @@ class DependencyManager {
         hackathonDao);
 
     // Managers
-    val hackathonManager = new HackathonManager(hackathonService);
+    val hackathonManager = new HackathonManager(hackathonService, hackathonDao);
 
     // executor
     managedExecutor = new ManagedExecutor(10);
@@ -163,7 +160,7 @@ class DependencyManager {
     return new KafkaMessageProducer<>(properties);
   }
 
-  private static MongoCollection createDatabase() {
+  private static MongoCollection<Document> createDatabase() {
     String connectionString = "mongodb+srv://root:fabfitfun123@sentiment-user.bj5le2r.mongodb.net/?retryWrites=true&w=majority";
     ServerApi serverApi = ServerApi.builder()
         .version(ServerApiVersion.V1)
@@ -177,7 +174,7 @@ class DependencyManager {
       try {
         // Send a ping to confirm a successful connection
         MongoDatabase database = mongoClient.getDatabase("user_sentiment");
-        return database.getCollection("user_sentiment", SentimentResource.class);
+        return database.getCollection("user_sentiment", Document.class);
       } catch (MongoException e) {
         e.printStackTrace();
       }

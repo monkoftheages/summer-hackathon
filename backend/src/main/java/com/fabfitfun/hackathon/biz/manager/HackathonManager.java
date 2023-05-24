@@ -1,20 +1,19 @@
 package com.fabfitfun.hackathon.biz.manager;
 
 import com.fabfitfun.hackathon.biz.service.HackathonService;
-
 import com.fabfitfun.hackathon.data.QuestionDataDto;
 import com.fabfitfun.hackathon.data.QuestionDto;
 import com.fabfitfun.hackathon.data.QuestionListDto;
 import com.fabfitfun.hackathon.data.SentimentList;
-import com.fabfitfun.hackathon.data.UsersToTest;
+import com.fabfitfun.hackathon.data.dao.HackathonDao;
+import java.util.Arrays;
 import lombok.AllArgsConstructor;
 import lombok.val;
-
-import java.util.Arrays;
 
 @AllArgsConstructor
 public class HackathonManager {
   private final HackathonService hackathonService;
+  private final HackathonDao hackathonDao;
 
   public void handleEvent(Long shopUserId, String query, String questionId) {
     hackathonService.manageData(shopUserId, query, questionId);

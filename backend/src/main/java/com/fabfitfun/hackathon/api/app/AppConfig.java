@@ -8,11 +8,4 @@ import lombok.Data;
 @Data
 class AppConfig {
   private boolean authBypassed;
-
-//  @Valid
-//  @NotNull
-//  @JsonProperty("janus")
-//  // Variable for v2 backend communication
-//  private JanusConfig janusConfig;
-
 }
