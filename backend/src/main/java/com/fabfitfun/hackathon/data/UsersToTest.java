@@ -1,6 +1,13 @@
 package com.fabfitfun.hackathon.data;
 
 public class UsersToTest {
+  public static long[] SMALL_USERS_TO_TEST = {
+      470072L,
+      631254L,
+      9737264L,
+  };
+
+
   public static long[] USERS_TO_TEST = {
       20624L,
       470025L,

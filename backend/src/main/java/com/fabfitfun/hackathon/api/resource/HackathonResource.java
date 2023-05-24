@@ -1,9 +1,11 @@
 package com.fabfitfun.hackathon.api.resource;
 
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -33,11 +35,11 @@ public class HackathonResource {
   @ApiResponse(responseCode = "400", description = "Error!",
       content = @Content(schema = @Schema(implementation = Response.class)))
   @GET
-  @Path("/test")
-  public Response saveAssignmentAnswers() {
-    val string = "";
-    System.out.println("Connection returning: " + string);
-    return Response.ok().entity(string).build();
+  @Path("/results/query/{query}/level/{level}")
+  public Response getResults(@PathParam("query") @NotNull String query,
+                             @PathParam("level") @NotNull Integer level) {
+    val results = hackathonManager.getResults(query, level);
+    return Response.ok().entity(results).build();
   }
 
   @Operation(summary = "Boilerplate test endpoint")

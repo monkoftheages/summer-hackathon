@@ -15,6 +15,7 @@ import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -26,7 +27,7 @@ public class HackathonService {
   private final ResteasyClient client;
   private final HackathonDao hackathonDao;
 
-  private static final String SENTIMENT_URL = "6dc7-98-153-114-3.ngrok.io/hugging_sentiment";
+  private static final String SENTIMENT_URL = "ae18-98-153-114-3.ngrok.io/hugging_sentiment";
   private static final String USER_ID = "user_id";
   private static final String PRODUCT_KEYWORD = "product_keyword";
 
@@ -68,5 +69,9 @@ public class HackathonService {
     } catch (Exception ex) {
       throw new KafkaMessageException(String.format("Error sending Answer to Kafka, %s", ex.getMessage()));
     }
+  }
+
+  public List<Long> getUsers(String query, int minimumLevel) {
+    return hackathonDao.getUserIds(query, minimumLevel);
   }
 }
