@@ -1,5 +1,8 @@
 package com.fabfitfun.hackathon.biz.manager;
 
+import static com.fabfitfun.hackathon.data.UsersToTest.SMALL_USERS_TO_TEST;
+import static com.fabfitfun.hackathon.data.UsersToTest.USERS_TO_TEST;
+
 import com.fabfitfun.hackathon.biz.service.HackathonService;
 import com.fabfitfun.hackathon.data.QuestionDataDto;
 import com.fabfitfun.hackathon.data.QuestionDto;
@@ -29,6 +32,8 @@ public class HackathonManager {
 
   public void runSentimentJob(String query) {
     val questionId = "test";
+    hackathonDao.insertQueryQuestion(query, USERS_TO_TEST.length, 0);
+
     hackathonService.sendAnswerToKafka(470072L, query, questionId);
 //    hackathonService.getUsers("query", 1);
 //    for (long shopUserId : UsersToTest.SMALL_USERS_TO_TEST) {
