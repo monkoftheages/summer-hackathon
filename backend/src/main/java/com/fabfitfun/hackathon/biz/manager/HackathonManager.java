@@ -14,8 +14,9 @@ public class HackathonManager {
   }
 
   public void runSentimentJob(String keyword) {
-    for (long shopUserId : UsersToTest.USERS_TO_TEST) {
-      hackathonService.sendAnswerToKafka(shopUserId, keyword);
-    }
+    hackathonService.sendAnswerToKafka(470072L, keyword);
+//    for (long shopUserId : UsersToTest.USERS_TO_TEST) {
+//      hackathonService.sendAnswerToKafka(shopUserId, keyword);
+//    }
   }
 }

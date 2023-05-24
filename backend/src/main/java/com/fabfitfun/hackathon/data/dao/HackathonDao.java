@@ -2,12 +2,19 @@ package com.fabfitfun.hackathon.data.dao;
 
 import java.util.List;
 
-import org.jdbi.v3.sqlobject.SqlObject;
-import org.jdbi.v3.sqlobject.statement.SqlQuery;
+import com.mongodb.client.MongoCollection;
+import lombok.AllArgsConstructor;
 
-public interface HackathonDao extends SqlObject {
+@AllArgsConstructor
+public class HackathonDao {
+  private MongoCollection database;
 
-  @SqlQuery("SELECT id FROM hackathon")
-  List<Integer> getAllIds();
+  public List<Long> getUserIds(String query, int minimumSentimentLevel) {
+    return null;
+  }
+
+  public int getNumberOfUsers(String query, int minimumSentimentLevel) {
+    return 0;
+  }
 }
 

@@ -7,6 +7,7 @@ import com.fabfitfun.hackathon.api.app.kafka.MessageConsumer;
 import com.fabfitfun.hackathon.api.app.kafka.MessageProducer;
 import com.fabfitfun.hackathon.api.app.kafka.RetryConfig;
 import com.fabfitfun.hackathon.api.resource.HackathonEventHandler;
+import com.mongodb.client.MongoCollection;
 import io.confluent.kafka.serializers.AbstractKafkaAvroSerDeConfig;
 import io.confluent.kafka.serializers.KafkaAvroDeserializer;
 import io.confluent.kafka.serializers.KafkaAvroDeserializerConfig;
@@ -33,6 +34,15 @@ import lombok.val;
 import lombok.extern.jbosslog.JBossLog;
 
 import java.util.Properties;
+
+import com.mongodb.ConnectionString;
+import com.mongodb.MongoClientSettings;
+import com.mongodb.MongoException;
+import com.mongodb.ServerApi;
+import com.mongodb.ServerApiVersion;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoDatabase;
 
 import static org.apache.kafka.clients.consumer.ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG;
 import static org.apache.kafka.clients.consumer.ConsumerConfig.CLIENT_ID_CONFIG;
@@ -75,7 +85,8 @@ class DependencyManager {
     log.info("Initializing read database pool...");
     val kafkaConfig = config.getKafkaConfig();
     final JdbiFactory factory = new JdbiFactory();
-    Jdbi hackathonDb = newDatabase(factory, env, config.getWriteDatabase(), "hackathonDbWrite");
+//    Jdbi hackathonDb = newDatabase(factory, env, config.getWriteDatabase(), "hackathonDbWrite");
+    val hackathonDb = createDatabase();
 
     AppConfig appConfig = config.getApp();
     ResteasyClient client = new ResteasyClientBuilder().build();
@@ -83,10 +94,11 @@ class DependencyManager {
     hackathonProducer = getHackathonProducer(kafkaConfig);
 
     // dao
-    val hackathonDao = hackathonDb.onDemand(HackathonDao.class);
+    val hackathonDao = new HackathonDao(hackathonDb);
 
     // Services
-    hackathonService = new HackathonService(HACKATHON_TOPIC, hackathonProducer, client);
+    hackathonService = new HackathonService(HACKATHON_TOPIC, hackathonProducer, client,
+        hackathonDao);
 
     // Managers
     val hackathonManager = new HackathonManager(hackathonService);
@@ -149,5 +161,27 @@ class DependencyManager {
   private <T> KafkaMessageProducer<T> getHackathonProducer(KafkaConfig kafkaConfig) {
     Properties properties = getProducerProperties(kafkaConfig);
     return new KafkaMessageProducer<>(properties);
+  }
+
+  private static MongoCollection createDatabase() {
+    String connectionString = "mongodb+srv://root:fabfitfun123@sentiment-user.bj5le2r.mongodb.net/?retryWrites=true&w=majority";
+    ServerApi serverApi = ServerApi.builder()
+        .version(ServerApiVersion.V1)
+        .build();
+    MongoClientSettings settings = MongoClientSettings.builder()
+        .applyConnectionString(new ConnectionString(connectionString))
+        .serverApi(serverApi)
+        .build();
+    // Create a new client and connect to the server
+    try (MongoClient mongoClient = MongoClients.create(settings)) {
+      try {
+        // Send a ping to confirm a successful connection
+        MongoDatabase database = mongoClient.getDatabase("admin");
+        return database.getCollection("user_sentiment");
+      } catch (MongoException e) {
+        e.printStackTrace();
+      }
+    }
+    return null;
   }
 }

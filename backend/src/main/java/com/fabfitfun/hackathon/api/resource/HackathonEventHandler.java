@@ -17,7 +17,7 @@ public class HackathonEventHandler implements EventHandler<UserProductInterest> 
       long shopUserId = Long.parseLong(shopUserIdStr);
 //      log.debugf("Received answer event. Shop User Id: %d", shopUserId);
 
-      hackathonManager.manageData(sentimentEvent.getKeyword(), shopUserId);
+      hackathonManager.manageData(shopUserId, sentimentEvent.getKeyword());
       
 //      hackathonManager.handleEvent(shopUserId, sentimentEvent);
       
