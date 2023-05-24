@@ -11,6 +11,8 @@ import javax.ws.rs.core.Response;
 
 import com.fabfitfun.hackathon.biz.manager.HackathonManager;
 
+import com.fabfitfun.hackathon.data.QuestionListDto;
+import com.google.gson.Gson;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -22,12 +24,25 @@ import lombok.val;
 /**
  * Endpoint(s) to handle assignment/reassignment for both users and groups of users.
  */
-@Consumes(MediaType.APPLICATION_JSON)
 @AllArgsConstructor
 @Path("/hackathon")
 @JBossLog
 public class HackathonResource {
   private HackathonManager hackathonManager;
+
+  @Operation(summary = "Boilerplate test endpoint")
+  @ApiResponse(responseCode = "200", description = "Success!",
+      content = @Content(schema = @Schema(implementation = Response.class)))
+  @ApiResponse(responseCode = "400", description = "Error!",
+      content = @Content(schema = @Schema(implementation = Response.class)))
+  @GET
+  @Path("/questions")
+  public Response getResults() {
+    val questions = hackathonManager.getQuestions();
+    val questionJson = new Gson().toJson(questions);
+    System.out.println(questions);
+    return Response.ok().entity(questionJson).build();
+  }
 
   @Operation(summary = "Boilerplate test endpoint")
   @ApiResponse(responseCode = "200", description = "Success!",

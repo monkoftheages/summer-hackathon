@@ -2,10 +2,14 @@ package com.fabfitfun.hackathon.biz.manager;
 
 import com.fabfitfun.hackathon.biz.service.HackathonService;
 
+import com.fabfitfun.hackathon.data.QuestionDto;
+import com.fabfitfun.hackathon.data.QuestionListDto;
 import com.fabfitfun.hackathon.data.SentimentList;
 import com.fabfitfun.hackathon.data.UsersToTest;
 import lombok.AllArgsConstructor;
 import lombok.val;
+
+import java.util.Arrays;
 
 @AllArgsConstructor
 public class HackathonManager {
@@ -25,10 +29,24 @@ public class HackathonManager {
 
   public void runSentimentJob(String query) {
     val questionId = "test";
-//    hackathonService.sendAnswerToKafka(470072L, query, questionId);
-    hackathonService.manageData(470072L, query, questionId);
+    hackathonService.sendAnswerToKafka(470072L, query, questionId);
+//    hackathonService.getUsers("query", 1);
 //    for (long shopUserId : UsersToTest.SMALL_USERS_TO_TEST) {
 //      hackathonService.sendAnswerToKafka(shopUserId, query);
 //    }
+  }
+
+  public QuestionListDto getQuestions() {
+    val question1 = QuestionDto.builder()
+        .questionId("1")
+        .query("Will this user like lipstick?")
+        .build();
+    val question2 = QuestionDto.builder()
+        .questionId("2")
+        .query("Will this user like expensive handbags?")
+        .build();
+    return QuestionListDto.builder()
+        .questions(Arrays.asList(question1, question2))
+        .build();
   }
 }
