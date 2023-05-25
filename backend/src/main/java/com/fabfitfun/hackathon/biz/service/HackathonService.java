@@ -71,7 +71,8 @@ public class HackathonService {
   }
 
   public Question getQuestion(String questionId) {
-    return null;
+    Question question = hackathonDao.getQuestionById(questionId);
+    return question;
   }
 
   public int getAverageSentiment(String questionId, int totalUsers) {
