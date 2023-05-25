@@ -1,0 +1,31 @@
+version: "3.9"
+services:
+  sentiment_analysis_api:
+    image: sentiment-analysis
+    build:
+      context: .
+      target: app
+      args:
+        - PYTHON_VERSION=$PYTHON_VERSION
+        - FFF_PYPI_USERNAME=$FFF_PYPI_USERNAME
+      secrets:
+        - FFF_PYPI_PASSWORD
+    command: "fff_fastapi start sentiment_analysis.main:app --no-enable-launchdarkly-client"
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    volumes:
+      - type: bind
+        source: $PWD/sentiment_analysis
+        target: /app/sentiment_analysis
+    restart: on-failure
+    healthcheck:
+      test: ["CMD", "curl", "http://localhost:9080/health/ping"]
+      interval: 10s
+      timeout: 1s
+      retries: 5
+
+secrets:
+  FFF_PYPI_PASSWORD:
+    environment: FFF_PYPI_PASSWORD
