@@ -10,6 +10,8 @@ class Reviews(Base):
     id: int = Column(Integer, primary_key=True)
     product_id: int = Column(Integer)
     review_text: str = Column(String)
+    shop_user_id: int = Column(Integer)
+    rating: int = Column(Integer)
 
     def __repr__(self):
         return f"Reviews(id={self.id}, product_id={self.product_id}, reviews={self.reviews})"
