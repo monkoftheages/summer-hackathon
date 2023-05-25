@@ -1,5 +1,6 @@
 package com.fabfitfun.hackathon.data.dao;
 
+import com.fabfitfun.hackathon.data.Question;
 import com.fabfitfun.hackathon.data.QuestionDto;
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
@@ -85,12 +86,45 @@ public class HackathonDao {
         e.printStackTrace();
       }
     }
+
     return "-1";
   }
 
-  public List<QuestionDto> getQuestions() {
+  public List<Question> getQuestions() {
     // TODO: return questions from question db
     return null;
+  }
+
+  public long getTotalSentimentByQuestionId(String questionId) {
+    List<Long> sentiments = new ArrayList<>();
+    String connectionString = "mongodb+srv://root:fabfitfun123@sentiment-user.bj5le2r.mongodb.net/?retryWrites=true&w=majority";
+    ServerApi serverApi = ServerApi.builder()
+        .version(ServerApiVersion.V1)
+        .build();
+    MongoClientSettings settings = MongoClientSettings.builder()
+        .applyConnectionString(new ConnectionString(connectionString))
+        .serverApi(serverApi)
+        .build();
+
+    // Create a new client and connect to the server
+    try (MongoClient mongoClient = MongoClients.create(settings)) {
+      try {
+        // Send a ping to confirm a successful connection
+        MongoDatabase collection = mongoClient.getDatabase("user_sentiment");
+        Bson bsonFilter = Filters.and(Filters.eq("_id", new ObjectId(questionId)));
+        collection.getCollection("user_sentiment", Document.class).find(bsonFilter).forEach(document -> sentiments.add((Long) document.get("sentiment")));
+
+      } catch (MongoException e) {
+        e.printStackTrace();
+      }
+    }
+
+    long totalSentiment = 0;
+    for (long sentiment : sentiments) {
+      totalSentiment += sentiment;
+    }
+
+    return totalSentiment;
   }
 }
 

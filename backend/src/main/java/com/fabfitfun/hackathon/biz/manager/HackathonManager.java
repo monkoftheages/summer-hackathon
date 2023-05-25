@@ -32,9 +32,11 @@ public class HackathonManager {
     }
   }
 
-//  public float getAvgSentiment(String query) {
-//
-//  }
+  public float getAvgSentiment(String questionId, long totalUsers) {
+    long totalSentiment = hackathonDao.getTotalSentimentByQuestionId(questionId);
+
+    return (float) totalSentiment/totalUsers;
+  }
 
   public QuestionListDto getQuestions() {
     val questions = hackathonService.getQuestions();
