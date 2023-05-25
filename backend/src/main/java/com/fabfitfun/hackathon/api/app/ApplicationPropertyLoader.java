@@ -22,15 +22,15 @@ public class ApplicationPropertyLoader {
    * - parameter = PROPERTIES_FILENAME from System Environment (file->resource)
    */
   public static void loadProperties() throws IOException {
-    Properties properties = new ApplicationPropertyLoader()
-            .loadPropertiesConfiguration(
-                    System.getProperty(SYSTEM_PROPERTIES_FILENAME),
-                    System.getenv(SYSTEM_PROPERTIES_FILENAME));
-    if (properties == null) {
-      throw new IOException("Cannot load the configuration, PROPERTIES_FILENAME must be provided");
-    }
-    properties.stringPropertyNames()
-            .forEach((name) -> System.setProperty("dw." + name, properties.getProperty(name)));
+//    Properties properties = new ApplicationPropertyLoader()
+//            .loadPropertiesConfiguration(
+//                    System.getProperty(SYSTEM_PROPERTIES_FILENAME),
+//                    System.getenv(SYSTEM_PROPERTIES_FILENAME));
+//    if (properties == null) {
+//      throw new IOException("Cannot load the configuration, PROPERTIES_FILENAME must be provided");
+//    }
+//    properties.stringPropertyNames()
+//            .forEach((name) -> System.setProperty("dw." + name, properties.getProperty(name)));
   }
 
   /**

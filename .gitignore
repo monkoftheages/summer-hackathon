@@ -3,7 +3,6 @@ backend/.idea/libraries/
 
 backend/.idea/
 
-
 .idea
 .venv/
 *.egg-info/
@@ -26,3 +25,10 @@ htmlcov/
 Brewfile.lock.json
 .direnv
 .venv
+*.class
+
+*.html
+
+backend/target/
+
+backend/summer-hackathon-api.iml

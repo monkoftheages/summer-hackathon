@@ -1,5 +1,9 @@
-FROM 190405961846.dkr.ecr.us-west-2.amazonaws.com/svc/java11-base-container:v1.0.0-rc.4
+#FROM java:8-jdk
+#LABEL team=box app=summer-hackathon-api
+#ADD target/summer-hackathon-api-0.0.1-SNAPSHOT.jar $JAR_PATH
+#ENTRYPOINT ["java","-jar","/target/summer-hackathon-api-0.0.1-SNAPSHOT.jar"]
 
-LABEL team=box app=summer-hackathon-api
-
-ADD target/summer-hackathon-api-0.0.1-SNAPSHOT.jar $JAR_PATH
+FROM openjdk:11
+MAINTAINER baeldung.com
+COPY target/summer-hackathon-api-0.0.1-SNAPSHOT.jar app.jar
+ENTRYPOINT ["java","-jar","/app.jar"]

@@ -1,0 +1,19 @@
+{
+  "type": "record",
+  "name": "UserProductInterest",
+  "namespace": "com.fabfitfun.hackathon.avro.customersegmentation",
+  "fields": [
+    {
+      "name": "userId",
+      "type": "long"
+    },
+    {
+      "name": "question",
+      "type": "string"
+    },
+    {
+      "name": "questionId",
+      "type": "string"
+    }
+  ]
+}

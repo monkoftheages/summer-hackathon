@@ -1,2 +1,50 @@
 app:
   authBypassed: false
+writeDatabase:
+  driverClass: software.aws.rds.jdbc.mysql.Driver
+  url: jdbc:mysql:aws://127.0.0.1/ssoblog?zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false
+  user: root
+  password: root
+
+  maxWaitForConnection: 1s
+  validationQuery: "/* MyService Health Check */ SELECT 1"
+  validationQueryTimeout: 3s
+  checkConnectionOnBorrow: true
+
+server:
+  applicationConnectors:
+    - type: http
+      port: 8080
+      bindHost: 0.0.0.0
+      useServerHeader: false
+      useDateHeader: false
+      useForwardedHeaders: false
+      maxRequestHeaderSize: 16KiB
+  adminConnectors:
+    - type: http
+      port: 8081
+      acceptorThreads: 1
+      selectorThreads: 1
+  requestLog:
+    appenders: []
+
+kafka:
+  brokers: b-1.retention-kafka-dev.qxsqdu.c5.kafka.us-west-2.amazonaws.com:9092
+  schemaRegistryHost: https://retention-kafka-schema-registry.fff-dev.com
+  topics: hackathon_topic
+  clientId: summer-hackathon-client-api
+  groupId: summer-hackathon-group-api
+  applicationId: summer-hackathon-application-api
+  configuration:
+    key.serializer: org.apache.kafka.common.serialization.StringSerializer
+    value.serializer: org.apache.kafka.common.serialization.StringSerializer
+    value.deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    key.deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    commit.interval.ms: 60000
+    max.poll.records: 100
+    session.timeout.ms: 60000
+
+
+retryConfig:
+  maxRetries: 2
+  initialPauseSeconds: 0
