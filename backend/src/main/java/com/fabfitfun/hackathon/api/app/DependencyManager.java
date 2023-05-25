@@ -21,6 +21,7 @@ import com.fabfitfun.hackathon.api.resource.HackathonResource;
 import com.fabfitfun.hackathon.biz.manager.HackathonManager;
 import com.fabfitfun.hackathon.biz.service.HackathonService;
 import com.fabfitfun.hackathon.data.dao.HackathonDao;
+import com.fabfitfun.hackathon.data.dao.LocalDao;
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.MongoException;
@@ -82,7 +83,7 @@ class DependencyManager {
     log.info("Initializing read database pool...");
     val kafkaConfig = config.getKafkaConfig();
     final JdbiFactory factory = new JdbiFactory();
-//    Jdbi hackathonDb = newDatabase(factory, env, config.getWriteDatabase(), "hackathonDbWrite");
+    Jdbi hackathonDbJdbi = newDatabase(factory, env, config.getWriteDatabase(), "hackathonDbWrite");
     val hackathonDb = createDatabase();
 
     AppConfig appConfig = config.getApp();
@@ -92,13 +93,14 @@ class DependencyManager {
 
     // dao
     val hackathonDao = new HackathonDao(hackathonDb);
+    val localDao = hackathonDbJdbi.onDemand(LocalDao.class);
 
     // Services
     hackathonService = new HackathonService(HACKATHON_TOPIC, hackathonProducer, client,
-        hackathonDao);
+        hackathonDao, localDao);
 
     // Managers
-    val hackathonManager = new HackathonManager(hackathonService, hackathonDao);
+    val hackathonManager = new HackathonManager(hackathonService);
 
     // executor
     managedExecutor = new ManagedExecutor(10);

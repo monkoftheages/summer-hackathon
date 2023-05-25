@@ -17,25 +17,17 @@ import lombok.val;
 @AllArgsConstructor
 public class HackathonManager {
   private final HackathonService hackathonService;
-  private final HackathonDao hackathonDao;
 
   public void handleEvent(Long shopUserId, String query, String questionId) {
     hackathonService.manageData(shopUserId, query, questionId);
   }
 
   public void runSentimentJob(String query) {
-    String insertedId = hackathonDao.insertQueryQuestion(query, USERS_TO_TEST.length, 0);
-//    hackathonService.sendAnswerToKafka(470072L, query, insertedId);
-//    hackathonService.getUsers("query", 1);
-    for (long shopUserId : UsersToTest.SMALL_USERS_TO_TEST) {
+    val usersToTest = new long[]{470072L};
+    String insertedId = hackathonService.insertQueryQuestion(query, usersToTest.length, 0);
+    for (long shopUserId : usersToTest) {
       hackathonService.sendAnswerToKafka(shopUserId, query, insertedId);
     }
-  }
-
-  public float getAvgSentiment(String questionId, long totalUsers) {
-    long totalSentiment = hackathonDao.getTotalSentimentByQuestionId(questionId);
-
-    return (float) totalSentiment/totalUsers;
   }
 
   public QuestionListDto getQuestions() {
