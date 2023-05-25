@@ -58,7 +58,7 @@ public class HackathonDao {
     return userIds;
   }
 
-  public void insertQueryQuestion(String question, int totalCount, int processedCount) {
+  public String insertQueryQuestion(String question, int totalCount, int processedCount) {
     String connectionString = "mongodb+srv://root:fabfitfun123@sentiment-user.bj5le2r.mongodb.net/?retryWrites=true&w=majority";
     ServerApi serverApi = ServerApi.builder()
         .version(ServerApiVersion.V1)
@@ -78,7 +78,7 @@ public class HackathonDao {
             .append("questions", question)
             .append("total", totalCount)
             .append("processed", processedCount));
-        System.out.println("Success! Inserted document id: " + result.getInsertedId());
+        return result.getInsertedId().asString().getValue();
 
       } catch (MongoException e) {
         e.printStackTrace();
