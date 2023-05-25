@@ -91,8 +91,62 @@ public class HackathonDao {
   }
 
   public List<Question> getQuestions() {
-    // TODO: return questions from question db
-    return null;
+    List<Question> questions = new ArrayList<>();
+    String connectionString = "mongodb+srv://root:fabfitfun123@sentiment-user.bj5le2r.mongodb.net/?retryWrites=true&w=majority";
+    ServerApi serverApi = ServerApi.builder()
+        .version(ServerApiVersion.V1)
+        .build();
+    MongoClientSettings settings = MongoClientSettings.builder()
+        .applyConnectionString(new ConnectionString(connectionString))
+        .serverApi(serverApi)
+        .build();
+
+    // Create a new client and connect to the server
+    try (MongoClient mongoClient = MongoClients.create(settings)) {
+      try {
+        // Send a ping to confirm a successful connection
+        MongoDatabase collection = mongoClient.getDatabase("user_sentiment");
+        collection.getCollection("query_questions", Document.class).find()
+            .forEach(document -> questions.add(Question.builder().id(document.getString("_id"))
+                .query(document.getString("question")).processed(document.getInteger("processed"))
+                .total(document.getInteger("total")).build()));
+
+      } catch (MongoException e) {
+        e.printStackTrace();
+      }
+    }
+
+    return questions;
+  }
+
+  public Question getQuestionById(String questionId) {
+    List<Question> result = new ArrayList<>();
+    String connectionString = "mongodb+srv://root:fabfitfun123@sentiment-user.bj5le2r.mongodb.net/?retryWrites=true&w=majority";
+    ServerApi serverApi = ServerApi.builder()
+        .version(ServerApiVersion.V1)
+        .build();
+    MongoClientSettings settings = MongoClientSettings.builder()
+        .applyConnectionString(new ConnectionString(connectionString))
+        .serverApi(serverApi)
+        .build();
+
+    // Create a new client and connect to the server
+    try (MongoClient mongoClient = MongoClients.create(settings)) {
+      try {
+        // Send a ping to confirm a successful connection
+        MongoDatabase collection = mongoClient.getDatabase("user_sentiment");
+        Bson bsonFilter = Filters.and(Filters.eq("_id", questionId));
+        collection.getCollection("query_questions", Document.class).find(bsonFilter).forEach(document ->
+            result.add(Question.builder().id(document.getString("_id"))
+            .query(document.getString("question")).processed(document.getInteger("processed"))
+            .total(document.getInteger("total")).build()));
+
+      } catch (MongoException e) {
+        e.printStackTrace();
+      }
+    }
+
+    return result.get(0);
   }
 
   public long getTotalSentimentByQuestionId(String questionId) {
