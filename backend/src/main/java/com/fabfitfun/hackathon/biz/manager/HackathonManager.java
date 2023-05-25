@@ -8,6 +8,7 @@ import com.fabfitfun.hackathon.data.QuestionDataDto;
 import com.fabfitfun.hackathon.data.QuestionDto;
 import com.fabfitfun.hackathon.data.QuestionListDto;
 import com.fabfitfun.hackathon.data.SentimentList;
+import com.fabfitfun.hackathon.data.UsersToTest;
 import com.fabfitfun.hackathon.data.dao.HackathonDao;
 import java.util.Arrays;
 import lombok.AllArgsConstructor;
@@ -16,53 +17,39 @@ import lombok.val;
 @AllArgsConstructor
 public class HackathonManager {
   private final HackathonService hackathonService;
-  private final HackathonDao hackathonDao;
 
   public void handleEvent(Long shopUserId, String query, String questionId) {
     hackathonService.manageData(shopUserId, query, questionId);
   }
 
-  public SentimentList getResults(String query, int minimumLevel) {
-    val users = hackathonService.getUsers(query, minimumLevel);
-    return SentimentList.builder()
-        .count(users.size())
-        .userIds(users)
-        .build();
-  }
-
   public void runSentimentJob(String query) {
-    val questionId = "test";
-    hackathonDao.insertQueryQuestion(query, USERS_TO_TEST.length, 0);
-
-    hackathonService.sendAnswerToKafka(470072L, query, questionId);
-//    hackathonService.getUsers("query", 1);
-//    for (long shopUserId : UsersToTest.SMALL_USERS_TO_TEST) {
-//      hackathonService.sendAnswerToKafka(shopUserId, query);
-//    }
+    val usersToTest = new long[]{470072L};
+//    val usersToTest = SMALL_USERS_TO_TEST;
+    String insertedId = hackathonService.insertQueryQuestion(query, usersToTest.length, 0);
+    for (long shopUserId : usersToTest) {
+      hackathonService.sendAnswerToKafka(shopUserId, query, insertedId);
+    }
   }
 
   public QuestionListDto getQuestions() {
-    val question1 = QuestionDto.builder()
-        .questionId("1")
-        .query("Will this user like lipstick?")
-        .build();
-    val question2 = QuestionDto.builder()
-        .questionId("2")
-        .query("Will this user like expensive handbags?")
-        .build();
+    val questions = hackathonService.getQuestions();
     return QuestionListDto.builder()
-        .questions(Arrays.asList(question1, question2))
+        .questions(questions)
         .build();
   }
 
   public QuestionDataDto getQuestionData(String questionId) {
+    val question = hackathonService.getQuestion(questionId);
+    val averageSentiment = hackathonService.getAverageSentiment(questionId, question.getTotal());
+    val highSentiment = hackathonService.getHighSentimentPercentage(questionId, question.getTotal());
+    val users = hackathonService.getUsers(questionId, 75);
     return QuestionDataDto.builder()
         .questionId(questionId)
-        .query("Will this user like lipstick?")
-        .averageSentiment(55)
-        .percentageHighSentiment(30)
+        .query(question.getQuery())
+        .averageSentiment(averageSentiment)
+        .percentageHighSentiment(highSentiment)
         .highSentimentTraits("old")
-        .highSentimentUsers(Arrays.asList(123L, 456L))
+        .highSentimentUsers(users)
         .build();
   }
 }

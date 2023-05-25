@@ -8,5 +8,5 @@ import java.util.List;
 @Data
 @Builder
 public class QuestionListDto {
-  List<QuestionDto> questions;
+  List<Question> questions;
 }
