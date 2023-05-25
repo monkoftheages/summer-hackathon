@@ -24,6 +24,7 @@ public class HackathonManager {
 
   public void runSentimentJob(String query) {
     val usersToTest = new long[]{470072L};
+//    val usersToTest = SMALL_USERS_TO_TEST;
     String insertedId = hackathonService.insertQueryQuestion(query, usersToTest.length, 0);
     for (long shopUserId : usersToTest) {
       hackathonService.sendAnswerToKafka(shopUserId, query, insertedId);

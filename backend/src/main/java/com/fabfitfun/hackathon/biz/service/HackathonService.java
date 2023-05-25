@@ -18,6 +18,7 @@ import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.util.EntityUtils;
 
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class HackathonService {
   private final HackathonDao hackathonDao;
   private final LocalDao localDao;
 
-  private static final String SENTIMENT_URL = "https://11e7-98-153-114-3.ngrok.io/hugging_sentiment";
+  private static final String SENTIMENT_URL = "https://7558-98-153-114-3.ngrok.io/hugging_sentiment";
   private static final String USER_ID = "user_id";
   private static final String PRODUCT_KEYWORD = "product_keyword";
 
@@ -45,8 +46,9 @@ public class HackathonService {
           .setEntity(new StringEntity(data, ContentType.APPLICATION_JSON))
           .build();
       val response = client.execute(request);
-//      val level = response.getEntity().toString();
-      int level = 12;
+      val splits = EntityUtils.toString(response.getEntity());
+      int level = Integer.valueOf(splits);
+//      int level = 12;
       localDao.insertUserSentiment(questionId, shopUserId, level);
     } catch (Exception e) {
       throw new RuntimeException(e);
