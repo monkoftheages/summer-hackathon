@@ -31,15 +31,18 @@ public class HackathonManager {
   }
 
   public void runSentimentJob(String query) {
-    val questionId = "test";
-    hackathonDao.insertQueryQuestion(query, USERS_TO_TEST.length, 0);
+    String insertedId = hackathonDao.insertQueryQuestion(query, USERS_TO_TEST.length, 0);
 
-    hackathonService.sendAnswerToKafka(470072L, query, questionId);
+    hackathonService.sendAnswerToKafka(470072L, query, insertedId);
 //    hackathonService.getUsers("query", 1);
 //    for (long shopUserId : UsersToTest.SMALL_USERS_TO_TEST) {
 //      hackathonService.sendAnswerToKafka(shopUserId, query);
 //    }
   }
+
+//  public float getAvgSentiment(String query) {
+//
+//  }
 
   public QuestionListDto getQuestions() {
     val question1 = QuestionDto.builder()
