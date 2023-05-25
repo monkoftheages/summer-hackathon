@@ -66,7 +66,7 @@ public class HackathonService {
     return hackathonDao.getUserIds(questionId, minimumLevel);
   }
 
-  public List<QuestionDto> getQuestions() {
+  public List<Question> getQuestions() {
     return hackathonDao.getQuestions();
   }
 
