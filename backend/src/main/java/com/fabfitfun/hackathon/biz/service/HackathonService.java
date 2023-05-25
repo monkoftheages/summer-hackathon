@@ -5,6 +5,7 @@ import com.fabfitfun.hackathon.api.app.kafka.MessageProducer;
 import com.fabfitfun.hackathon.api.mapper.KafkaMessageException;
 import com.fabfitfun.hackathon.avro.customersegmentation.UserProductInterest;
 
+import com.fabfitfun.hackathon.data.Question;
 import com.fabfitfun.hackathon.data.QuestionDto;
 import com.fabfitfun.hackathon.data.QuestionListDto;
 import com.fabfitfun.hackathon.data.dao.HackathonDao;
@@ -61,9 +62,23 @@ public class HackathonService {
     }
   }
 
-  public List<Long> getUsers(String query, int minimumLevel) {
-    List<Long> result = hackathonDao.getUserIds(query, minimumLevel);
+  public List<Long> getUsers(String questionId, int minimumLevel) {
+    return hackathonDao.getUserIds(questionId, minimumLevel);
+  }
+
+  public List<QuestionDto> getQuestions() {
+    return hackathonDao.getQuestions();
+  }
+
+  public Question getQuestion(String questionId) {
     return null;
-//    return hackathonDao.getUserIds(query, minimumLevel);
+  }
+
+  public int getAverageSentiment(String questionId, int totalUsers) {
+    return -1;
+  }
+
+  public int getHighSentimentPercentage(String questionId, int totalUsers) {
+    return -1;
   }
 }

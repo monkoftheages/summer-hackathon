@@ -1,5 +1,6 @@
 package com.fabfitfun.hackathon.data.dao;
 
+import com.fabfitfun.hackathon.data.QuestionDto;
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.MongoException;
@@ -84,6 +85,12 @@ public class HackathonDao {
         e.printStackTrace();
       }
     }
+    return "-1";
+  }
+
+  public List<QuestionDto> getQuestions() {
+    // TODO: return questions from question db
+    return null;
   }
 }
 
