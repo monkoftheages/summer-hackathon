@@ -2,9 +2,9 @@ app:
   authBypassed: false
 writeDatabase:
   driverClass: software.aws.rds.jdbc.mysql.Driver
-  url: jdbc:mysql://rds-dev-shop-cluster.cluster-c1yqzlng7npm.us-west-2.rds.amazonaws.com/ssoblog?zeroDateTimeBehavior=convertToNull&useSSL=false
-  user: dev
-  password: Q5JsZQM&rjc4v7
+  url: jdbc:mysql:aws://127.0.0.1/ssoblog?zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false
+  user: root
+  password: root
 
   maxWaitForConnection: 1s
   validationQuery: "/* MyService Health Check */ SELECT 1"
