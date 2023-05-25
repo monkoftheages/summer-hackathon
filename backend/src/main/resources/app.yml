@@ -2,9 +2,9 @@ app:
   authBypassed: false
 writeDatabase:
   driverClass: software.aws.rds.jdbc.mysql.Driver
-  url: jdbc:mysql:aws://127.0.0.1/ssoblog?zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false
+  url: jdbc:mysql:aws://127.0.0.1/hackathonDbWrite?zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false
   user: root
-  password: root
+  password: 123456
 
   maxWaitForConnection: 1s
   validationQuery: "/* MyService Health Check */ SELECT 1"

@@ -23,8 +23,8 @@ public class HackathonManager {
   }
 
   public void runSentimentJob(String query) {
-    val usersToTest = new long[]{470072L};
-//    val usersToTest = SMALL_USERS_TO_TEST;
+//    val usersToTest = new long[]{470072L};
+    val usersToTest = SMALL_USERS_TO_TEST;
     String insertedId = hackathonService.insertQueryQuestion(query, usersToTest.length, 0);
     for (long shopUserId : usersToTest) {
       hackathonService.sendAnswerToKafka(shopUserId, query, insertedId);
@@ -42,7 +42,7 @@ public class HackathonManager {
     val question = hackathonService.getQuestion(questionId);
     val averageSentiment = hackathonService.getAverageSentiment(questionId, question.getTotal());
     val highSentiment = hackathonService.getHighSentimentPercentage(questionId, question.getTotal());
-    val users = hackathonService.getUsers(questionId, 75);
+    val users = hackathonService.getUsers(questionId, 50);
     return QuestionDataDto.builder()
         .questionId(questionId)
         .query(question.getQuery())

@@ -30,7 +30,7 @@ public class HackathonService {
   private final HackathonDao hackathonDao;
   private final LocalDao localDao;
 
-  private static final String SENTIMENT_URL = "https://7558-98-153-114-3.ngrok.io/hugging_sentiment";
+  private static final String SENTIMENT_URL = "https://ab9a-98-153-114-3.ngrok.io/hugging_sentiment";
   private static final String USER_ID = "user_id";
   private static final String PRODUCT_KEYWORD = "product_keyword";
 

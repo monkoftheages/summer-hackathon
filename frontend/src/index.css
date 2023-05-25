@@ -1,0 +1,130 @@
+html {
+  box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+body {
+  font-family: 'Nunito Sans', sans-serif;
+  -webkit-font-smoothing: auto;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+:focus {
+  outline: none;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  color: #000;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+h1 {
+  font-weight: 400;
+}
+
+.xLarge .page-row,
+.large .page-row,
+.medium .page-row {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.xLarge .page-row {
+  width: 1200px;
+}
+
+.large .page-row {
+  width: 970px;
+}
+
+.medium .page-row {
+  width: 725px;
+}
+
+.small .page-row {
+  padding-left: 25px;
+  padding-right: 25px;
+}
+
+.zEWidget-launcher {
+  z-index: 999 !important;
+}
+
+.ReactModal__Body--open {
+  overflow: hidden;
+}
+
+.fff-shared-footer-header-link {
+  padding-bottom: 15px;
+}
+
+.naked-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  letter-spacing: normal;
+  margin: 0;
+  padding: 0;
+}
+
+.naked-button:disabled {
+  color: currentColor;
+  cursor: auto;
+}
+
+.sr-only {
+  position: absolute;
+  height: 1px;
+  width: 1px;
+  clip: rect(1px 1px 1px 1px);
+  clip: rect(1px, 1px, 1px, 1px);
+  clip-path: polygon(0px 0px, 0px 0px, 0px 0px);
+  -webkit-clip-path: polygon(0px 0px, 0px 0px, 0px 0px);
+  overflow: hidden !important;
+}
+
+/* react-tooltip */
+.__react_component_tooltip.type-dark.show {
+  border-radius: 0;
+  background-color: #363636;
+  opacity: 1;
+  box-shadow: 0px 3px 7px 0 rgba(0, 0, 0, 0.2);
+}
+
+.__react_component_tooltip.type-dark.show.place-top::after {
+  border-top-color: #363636;
+}
+
+.__react_component_tooltip.type-dark.show.place-right::after {
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+  margin-top: 0;
+  transform: translateY(-50%);
+  border-right-width: 7px;
+  left: -7px;
+  border-right-color: #363636;
+}
+
+@media screen and (min-width: 992px) {
+
+  /* Global Nav */
+  .header .shopping-cart.sticky-cart {
+    position: fixed;
+    top: 7px;
+  }
+}

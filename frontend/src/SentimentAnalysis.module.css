@@ -1,0 +1,179 @@
+.container {
+  display: flex;
+  margin-top: 30px;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.headerLeft {
+  display: flex;
+  flex: 1;
+  align-items: center;
+}
+
+.headerLeft h1 {
+  font-size: 30px;
+  font-family: 'Playfair Display', serif;
+}
+
+.headerRight {
+  display: flex;
+}
+
+.logo {
+  margin-right: 20px;
+  height: 65px;
+  display: flex;
+}
+
+.topBar {
+  height: 48px;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 42px;
+}
+
+.leftPanel {
+  display: flex;
+  flex: 1;
+  align-items: center;
+}
+
+.rightPanel {
+  display: flex;
+}
+
+.rightPanel>button {
+  margin-left: 18px;
+}
+
+.iconButton {
+  width: 48px;
+  height: 48px;
+  border-width: 1px;
+}
+
+.iconButton:hover svg g {
+  fill: #666666;
+}
+
+.productView {
+  display: flex;
+  align-self: stretch;
+  flex-direction: column;
+}
+
+.productView div {
+  display: flex;
+  flex: 1;
+}
+
+.productView input {
+  height: 48px;
+  flex: 1;
+  font-family: 'Nunito Sans';
+  text-transform: capitalize;
+  border: solid 1px #ccd0d2;
+  border-radius: 6px;
+  padding-left: 12px;
+}
+
+.productView button {
+  border: none;
+  cursor: pointer;
+  font-family: 'Nunito Sans';
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  line-height: 24px;
+  text-transform: uppercase;
+  min-width: fit-content;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  width: 200px;
+  margin-left: 20px;
+  background-color: #fb6a66;
+  border-radius: 6px;
+  color: #fff
+}
+
+.paginationContainer {
+  margin-top: 48px;
+}
+
+.progressBar {
+margin-top: 50px;
+}
+
+.progressBar > div {
+  border-radius: 0 !important;
+  background: #f8b9b7 !important;
+}
+.progressBar > div > div {
+  border-radius: 0 !important;
+  background: #ff5b5d !important;
+}
+
+.dropdownButtonContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+body > iframe[style*='2147483647']{
+  display: none;
+}
+
+.select {
+  display: flex;
+  align-items: center;
+  height: 48px;
+  padding: 0 12px;
+  background-color: transparent;
+  border: solid 1px #ccd0d2;
+  border-radius: 6px;
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+  overflow-x: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.select span {
+  margin-right: auto;
+  text-align: left;
+  overflow-x: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.select::after {
+  content: '\f078';
+  font-family: 'Font Awesome 5 Pro';
+  color: #9b9b9b;
+  width: 16px;
+  height: 16px;
+}
+
+.questionsDropdown {
+  padding: 0 12px;
+  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.2);
+}
+
+.questionsDropdown > p {
+  cursor:pointer;
+  height: 30px;
+  display: flex;
+  align-items: center;
+}
+
+.questionInfo {
+  padding: 0 12px;
+}

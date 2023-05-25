@@ -1,0 +1,10 @@
+/* breakpoints */
+@value large: 1199px;
+@value medium: 991px;
+@value small: 767px;
+
+/* mobile first breakpoints */
+@value sm: 576px;
+@value md: 768px;
+@value lg: 992px;
+@value xl: 1200px;

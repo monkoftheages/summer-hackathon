@@ -1,0 +1,114 @@
+{
+  "name": "summer-sentiment-analysis",
+  "version": "0.1.0",
+  "private": true,
+  "devDependencies": {
+    "@babel/register": "^7.16.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-plugin-transform-react-jsx-source": "^6.22.0",
+    "babel-preset-expo": "^5.1.1",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.2",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-config-prettier": "^4.0.0",
+    "eslint-plugin-import": "^2.16.0",
+    "eslint-plugin-jest": "^23.13.2",
+    "eslint-plugin-jsx-a11y": "^6.2.1",
+    "eslint-plugin-prettier": "^3.0.1",
+    "eslint-plugin-react": "^7.12.4",
+    "jest-junit": "^10.0.0",
+    "lint-staged": "^10.2.11",
+    "npm-run-all": "^4.1.5",
+    "pm2": "^5.2.0",
+    "prettier": "^1.16.4"
+  },
+  "dependencies": {
+    "@bit/fabfitfun.shared.global.button": "^0.0.11",
+    "@bit/fabfitfun.shared.global.font-awesome-collection": "^0.0.5",
+    "@bit/fabfitfun.shared.global.layout-reader": "^0.0.117",
+    "@ramonak/react-progress-bar": "^5.0.3",
+    "@testing-library/jest-dom": "^4.1.0",
+    "@testing-library/react": "^9.1.4",
+    "classnames": "^2.2.6",
+    "core-js": "^3.0.0-beta.5",
+    "flow": "^0.2.3",
+    "flow-bin": "^0.111.0",
+    "flow-typed": "^2.6.1",
+    "husky": "^4.2.5",
+    "intersection-observer": "^0.7.0",
+    "lodash": "^4.17.19",
+    "moment": "^2.27.0",
+    "moment-timezone": "^0.5.31",
+    "prop-types": "^15.7.2",
+    "query-string": "^6.9.0",
+    "react": "^16.13.1",
+    "react-app-polyfill": "^0.2.2",
+    "react-beautiful-dnd": "^13.1.0",
+    "react-color": "^2.19.3",
+    "react-dom": "^16.13.1",
+    "react-drag-listview": "2.0.0",
+    "react-hook-form": "^6.13.1",
+    "react-lazyload": "^3.1.0",
+    "react-modal": "^3.11.1",
+    "react-paginate": "^6.5.0",
+    "react-router-dom": "^5.1.2",
+    "react-scripts": "^3.4.1",
+    "react-toastify": "^6.0.5",
+    "react-tooltip": "^4.2.7",
+    "sass": "^1.49.9",
+    "spacetime": "^5.4.0"
+  },
+  "scripts": {
+    "start-https": "sudo PORT=443 HTTPS=true SSL_CRT_FILE=./.cert/cert.pem SSL_KEY_FILE=./.cert/key.pem react-scripts start",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx}",
+      "!<rootDir>/node_modules/",
+      "!**/__fixtures__/**",
+      "!src/config/**",
+      "!src/index.js"
+    ],
+    "coverageReporters": [
+      "text",
+      "jest-junit",
+      "cobertura"
+    ]
+  },
+  "resolutions": {
+    "//": "See https://github.com/facebook/create-react-app/issues/11773",
+    "react-error-overlay": "6.0.9"
+  },
+  "jest-junit": {
+    "outputDirectory": "./coverage",
+    "suiteName": "jest tests",
+    "output": "./coverage/junit.xml",
+    "classNameTemplate": "{classname} - {title}",
+    "titleTemplate": "{classname} - {title}",
+    "ancestorSeparator": " › ",
+    "suiteNameTemplate": "{filepath}",
+    "usePathForSuiteName": "true"
+  }
+}

@@ -1,0 +1,28 @@
+@value shared: "../../shared.module.css";
+@value md from shared;
+@value lg from shared;
+@value xl from shared;
+
+.container {
+  padding: 0 12px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+@media (min-width: md) {
+  .container {
+    padding: 0;
+    width: 725px;
+  }
+}
+@media screen and (min-width: lg) {
+  .container {
+    width: 970px;
+  }
+}
+
+@media screen and (min-width: xl) {
+  .container {
+    width: 1200px;
+  }
+}

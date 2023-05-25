@@ -40,7 +40,7 @@ public interface LocalDao extends SqlObject {
 
   @SqlQuery("SELECT SUM(s.level) "
       + "FROM `hackathon_sentiment` s  "
-      + "WHERE s.questionId = :questionId AND s.level > 75")
+      + "WHERE s.questionId = :questionId AND s.level >= 50")
   public int getTotalHighSentiment(@Bind("questionId") String questionId);
 
   @SqlUpdate("INSERT INTO hackathon_questions (query, total) "
